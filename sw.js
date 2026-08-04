@@ -1,4 +1,4 @@
-var CACHE = "agenda-v2";
+var CACHE = "agenda-v4";
 var ARQUIVOS = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png", "./icon-maskable.png"];
 
 self.addEventListener("install", function (e) {
@@ -14,7 +14,7 @@ self.addEventListener("activate", function (e) {
   );
 });
 
-// rede primeiro, cache como reserva: sempre pega a versão nova quando há internet
+// rede primeiro, cache como reserva
 self.addEventListener("fetch", function (e) {
   if (e.request.method !== "GET") return;
   e.respondWith(
@@ -24,6 +24,19 @@ self.addEventListener("fetch", function (e) {
       return resp;
     }).catch(function () {
       return caches.match(e.request).then(function (r) { return r || caches.match("./index.html"); });
+    })
+  );
+});
+
+// tocar no aviso abre o app
+self.addEventListener("notificationclick", function (e) {
+  e.notification.close();
+  e.waitUntil(
+    self.clients.matchAll({ type: "window", includeUncontrolled: true }).then(function (lista) {
+      for (var i = 0; i < lista.length; i++) {
+        if (lista[i].url.indexOf(self.registration.scope) === 0 && "focus" in lista[i]) return lista[i].focus();
+      }
+      if (self.clients.openWindow) return self.clients.openWindow("./index.html");
     })
   );
 });
