@@ -1,4 +1,4 @@
-var CACHE = "agenda-v7";
+var CACHE = "agenda-v9";
 var ARQUIVOS = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png", "./icon-maskable.png"];
 
 self.addEventListener("install", function (e) {
@@ -17,6 +17,7 @@ self.addEventListener("activate", function (e) {
 // rede primeiro, cache como reserva
 self.addEventListener("fetch", function (e) {
   if (e.request.method !== "GET") return;
+  if (e.request.url.indexOf("http") !== 0) return;
   e.respondWith(
     fetch(e.request).then(function (resp) {
       var copia = resp.clone();
@@ -28,15 +29,29 @@ self.addEventListener("fetch", function (e) {
   );
 });
 
-// tocar no aviso abre o app
+// botões da notificação: cronometrar, pausar, concluir, feito
 self.addEventListener("notificationclick", function (e) {
-  e.notification.close();
+  var acao = e.action || "";
+  var dados = e.notification.data || {};
+  var id = dados.id || "";
+  if (acao !== "pausar" && acao !== "concluir") e.notification.close();
+
   e.waitUntil(
     self.clients.matchAll({ type: "window", includeUncontrolled: true }).then(function (lista) {
       for (var i = 0; i < lista.length; i++) {
-        if (lista[i].url.indexOf(self.registration.scope) === 0 && "focus" in lista[i]) return lista[i].focus();
+        var c = lista[i];
+        if (c.url.indexOf(self.registration.scope) === 0) {
+          if (acao) { try { c.postMessage({ acao: acao, id: id }); } catch (x) {} }
+          if ("focus" in c) return c.focus();
+          return null;
+        }
       }
-      if (self.clients.openWindow) return self.clients.openWindow("./index.html");
+      // app fechado: abre já com a ação na URL
+      if (self.clients.openWindow) {
+        var url = "./index.html" + (acao ? ("?acao=" + encodeURIComponent(acao) + "&id=" + encodeURIComponent(id)) : "");
+        return self.clients.openWindow(url);
+      }
+      return null;
     })
   );
 });
