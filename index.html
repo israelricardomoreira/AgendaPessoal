@@ -11,6 +11,7 @@
 <style>
   :root{--papel:#EDEFE9;--papel2:#F5F6F1;--tinta:#16211E;--tinta2:#5D6862;--tinta3:#98A099;
     --linha:#D4D8CF;--carimbo:#5B3A8B;--fraco:#5B3A8B1A;--falha:#A6453F;--falhaFraco:#A6453F14;
+    --pausa:#B8860B;
     --serif:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif;
     --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
     --mono:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace}
@@ -20,34 +21,41 @@
   #app{max-width:430px;margin:0 auto;min-height:100vh;background:var(--papel);font-size:16px;line-height:1.45;position:relative;border-left:1px solid var(--linha);border-right:1px solid var(--linha)}
   .boot{font-family:var(--mono);font-size:12px;color:var(--tinta3);padding:48px;text-align:center}
 
-  .topo{padding:14px 16px 12px;border-bottom:2px solid var(--tinta);position:relative;overflow:hidden}
+  .topo{padding:13px 16px 11px;border-bottom:2px solid var(--tinta);position:relative;overflow:hidden}
   .eyebrow{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--tinta3)}
-  .data{font-family:var(--serif);font-size:23px;line-height:1.15;margin:2px 0 0;padding-right:96px;font-weight:600}
-  .tallyLinha{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:9px;padding-right:96px}
+  .data{font-family:var(--serif);font-size:22px;line-height:1.15;margin:2px 0 0;padding-right:120px;font-weight:600}
+  .tallyLinha{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:9px;padding-right:120px}
   .tally{display:flex;gap:3px;flex-wrap:wrap}
   .tally i{width:8px;height:13px;border:1px solid var(--linha);display:block}
   .tally i.on{background:var(--carimbo);border-color:var(--carimbo)}
   .tally i.mn{background:var(--fraco);border-color:var(--carimbo)}
   .tally i.no{background:var(--falhaFraco);border-color:var(--falha)}
-  .contagem{font-family:var(--mono);font-size:10.5px;color:var(--tinta2);white-space:nowrap}
-  .carimbo{position:absolute;right:12px;top:50%;transform:translateY(-50%) rotate(-9deg);border:2px solid var(--carimbo);border-radius:3px;padding:5px 9px 4px;color:var(--carimbo);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;text-align:center;opacity:.82;pointer-events:none;line-height:1.25;box-shadow:inset 0 0 0 1px var(--papel),inset 0 0 0 3px var(--carimbo)}
-  .carimbo small{display:block;font-size:7.5px;font-weight:400;letter-spacing:.1em;opacity:.8;margin-top:1px}
+  .ajuda{position:absolute;right:12px;top:11px;width:30px;height:30px;border-radius:50%;border:1.5px solid var(--tinta3);
+    background:transparent;color:var(--tinta2);font-family:var(--serif);font-size:16px;cursor:pointer;z-index:5}
+  .carimbo{position:absolute;right:12px;top:calc(50% + 8px);transform:translateY(-50%) rotate(-9deg);border:2px solid var(--carimbo);border-radius:3px;padding:4px 8px 3px;color:var(--carimbo);font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.1em;text-align:center;opacity:.82;pointer-events:none;line-height:1.25;box-shadow:inset 0 0 0 1px var(--papel),inset 0 0 0 3px var(--carimbo)}
+  .carimbo small{display:block;font-size:7px;font-weight:400;opacity:.8;margin-top:1px}
   .carimbo.entra{animation:pressiona .45s cubic-bezier(.2,1.4,.4,1)}
   @keyframes pressiona{0%{opacity:0;transform:translateY(-50%) rotate(-9deg) scale(2);filter:blur(3px)}60%{opacity:.95;filter:blur(0)}100%{opacity:.82;transform:translateY(-50%) rotate(-9deg) scale(1)}}
+  .contagem{font-family:var(--mono);font-size:10.5px;color:var(--tinta2);white-space:nowrap}
 
   .abas{display:flex;border-bottom:1px solid var(--linha);background:var(--papel2);position:sticky;top:0;z-index:30}
-  .abas button{flex:1;appearance:none;background:none;border:0;border-right:1px solid var(--linha);padding:14px 1px;font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--tinta3);cursor:pointer}
+  .abas button{flex:1;appearance:none;background:none;border:0;border-right:1px solid var(--linha);padding:13px 1px;font-family:var(--mono);font-size:9px;letter-spacing:.04em;text-transform:uppercase;color:var(--tinta3);cursor:pointer}
   .abas button:last-child{border-right:0}
   .abas button[aria-selected=true]{color:var(--tinta);background:var(--papel);box-shadow:inset 0 -2px 0 var(--carimbo)}
 
-  .cronobar{position:sticky;top:44px;z-index:25;background:var(--carimbo);color:var(--papel);display:flex;align-items:center;gap:10px;padding:10px 14px;font-family:var(--mono);font-size:12px}
-  .cronobar .nome{flex:1;font-family:var(--sans);font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .cronobar{position:sticky;top:42px;z-index:25;background:var(--carimbo);color:var(--papel);display:flex;align-items:center;gap:8px;padding:9px 12px;font-family:var(--mono);font-size:12px}
+  .cronobar .nome{flex:1;font-family:var(--sans);font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .cronobar b{font-size:15px}
-  .cronobar button{appearance:none;background:transparent;border:1.5px solid var(--papel);color:var(--papel);border-radius:3px;padding:7px 10px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+  .cronobar button{appearance:none;background:transparent;border:1.5px solid var(--papel);color:var(--papel);border-radius:3px;padding:6px 8px;font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+
+  .navdia{display:flex;align-items:center;gap:6px;margin-bottom:12px}
+  .navdia button{appearance:none;background:var(--papel2);border:1px solid var(--linha);border-radius:3px;padding:9px 12px;
+    font-family:var(--mono);font-size:12px;color:var(--tinta2);cursor:pointer}
+  .navdia .meio{flex:1;text-align:center;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--tinta3)}
 
   .painel{padding:14px 16px 40px}
-  .vazio{text-align:center;padding:38px 12px}
-  .vazio h3{font-family:var(--serif);font-size:21px;margin:0 0 8px}
+  .vazio{text-align:center;padding:34px 12px}
+  .vazio h3{font-family:var(--serif);font-size:20px;margin:0 0 8px}
   .vazio p{color:var(--tinta2);font-size:15px;margin:0 0 20px}
 
   .proxima{border:1px solid var(--carimbo);border-radius:4px;padding:11px 12px;margin-bottom:12px;background:var(--fraco);display:flex;align-items:center;gap:10px}
@@ -69,10 +77,13 @@
   .minimo{font-size:12px;color:var(--tinta3);font-style:italic}
   .marca{font-family:var(--mono);font-size:10px;color:var(--carimbo)}
   .marcaN{font-family:var(--mono);font-size:10px;color:var(--falha)}
+  .marcaP{font-family:var(--mono);font-size:10px;color:var(--pausa)}
+  .anot{font-size:13px;color:var(--tinta2);margin-top:4px;padding-left:9px;border-left:2px solid var(--linha)}
   .pill{appearance:none;background:var(--papel2);border:1px solid var(--linha);border-radius:14px;padding:4px 9px;font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--tinta2);cursor:pointer}
   .pill:active{background:var(--linha)}
   .pill.rox{color:var(--carimbo);border-color:#5B3A8B44}
   .pill.rub{color:var(--falha);border-color:#A6453F44}
+  .pill.amb{color:var(--pausa);border-color:#B8860B55}
   .caixa{width:26px;height:26px;border:1.5px solid var(--tinta3);border-radius:3px;justify-self:end;position:relative;cursor:pointer}
   .linha.feito .caixa{background:var(--carimbo);border-color:var(--carimbo)}
   .linha.feito .caixa::after{content:"";position:absolute;left:8.5px;top:3px;width:6px;height:13px;border:solid var(--papel);border-width:0 2px 2px 0;transform:rotate(42deg)}
@@ -86,8 +97,10 @@
   .linha.falho .titulo{color:var(--tinta3)}
   .linha.impr{box-shadow:inset 3px 0 0 var(--carimbo);padding-left:8px;grid-template-columns:38px 1fr 30px}
   .linha.agora{box-shadow:inset 3px 0 0 var(--carimbo);padding-left:8px;background:#5B3A8B0A}
+  .linha.pausada{box-shadow:inset 3px 0 0 var(--pausa);padding-left:8px}
   .linha.pulada{opacity:.55}
   .linha.pulada .titulo{text-decoration:line-through dotted}
+  .linha.prio .titulo::before{content:"★ ";color:var(--carimbo);font-size:12px}
 
   .btn{appearance:none;background:transparent;border:1.5px solid var(--tinta);color:var(--tinta);font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:13px 12px;border-radius:3px;cursor:pointer}
   .btn:active{background:var(--tinta);color:var(--papel)}
@@ -95,21 +108,20 @@
   .btn.leve{border-color:var(--linha);color:var(--tinta2);border-width:1px}
   .btn.largo{width:100%}
   .acoes{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px dashed var(--linha)}
-  .acoes .btn{flex:1;min-width:128px}
+  .acoes .btn{flex:1;min-width:120px}
 
   .campo{margin-top:20px}
   .campo>label,.rotulo{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--tinta3);margin-bottom:7px}
   input[type=text],input[type=time],input[type=number],input[type=date],textarea,select{width:100%;background:var(--papel2);border:1px solid var(--linha);border-radius:3px;padding:12px 11px;font-family:var(--sans);font-size:16px;color:var(--tinta)}
   input:focus,textarea:focus,select:focus{outline:none;border-color:var(--carimbo);background:#fff}
   textarea{resize:vertical;min-height:62px}
-  .prio{display:flex;align-items:center;gap:9px;margin-bottom:7px}
-  .prio span{font-family:var(--mono);font-size:12px;color:var(--carimbo);width:14px;flex:none}
   .duo{display:flex;gap:9px}.duo>div{flex:1}
 
   .chips{display:flex;flex-wrap:wrap;gap:6px}
-  .chip{appearance:none;background:var(--papel2);border:1px solid var(--linha);border-radius:16px;padding:9px 13px;font-family:var(--sans);font-size:13.5px;color:var(--tinta2);cursor:pointer}
+  .chip{appearance:none;background:var(--papel2);border:1px solid var(--linha);border-radius:16px;padding:9px 13px;font-family:var(--sans);font-size:13.5px;color:var(--tinta2);cursor:pointer;text-align:left}
   .chip[aria-pressed=true]{background:var(--tinta);border-color:var(--tinta);color:var(--papel)}
   .chip.dia{border-radius:3px;padding:9px 0;flex:1;min-width:34px;text-align:center;font-family:var(--mono);font-size:11px}
+  .chip.mini{padding:6px 10px;font-size:12.5px}
 
   .form{border:1px solid var(--tinta);border-radius:4px;padding:15px;margin-top:14px;background:var(--papel2)}
   .form h4{font-family:var(--serif);font-size:18px;margin:0 0 13px}
@@ -120,7 +132,7 @@
   .conflito ul{margin:0 0 10px;padding-left:18px;color:var(--tinta2)}
 
   .grade{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:4px 0}
-  .cel{border:1px solid var(--linha);border-radius:3px;padding:8px 1px 6px;text-align:center;background:var(--papel2)}
+  .cel{border:1px solid var(--linha);border-radius:3px;padding:8px 1px 6px;text-align:center;background:var(--papel2);cursor:pointer}
   .cel.hoje{border-color:var(--carimbo);border-width:1.5px}
   .cel b{display:block;font-family:var(--mono);font-size:9px;color:var(--tinta3);font-weight:400;text-transform:uppercase}
   .cel .pct{font-family:var(--serif);font-size:16px;color:var(--tinta3);line-height:1.5}
@@ -154,8 +166,17 @@
   .passo p{margin:3px 0 0;font-size:14px;color:var(--tinta2)}
   .aviso{background:var(--fraco);border-left:3px solid var(--carimbo);padding:12px 13px;margin-top:16px;font-size:14.5px}
   .aviso.rub{background:var(--falhaFraco);border-color:var(--falha)}
+  .aviso.amb{background:#B8860B14;border-color:var(--pausa)}
+  .aviso:first-child{margin-top:0}
   .rodape{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--tinta3);text-align:center;padding:16px;border-top:1px solid var(--linha)}
   .saida{width:100%;min-height:210px;font-family:var(--mono);font-size:11px;line-height:1.5;white-space:pre;overflow-x:auto}
+
+  .modal{position:fixed;inset:0;background:rgba(22,33,30,.55);z-index:100;display:flex;align-items:flex-end;justify-content:center}
+  .modalCx{background:var(--papel);width:100%;max-width:430px;max-height:88vh;overflow-y:auto;border-radius:8px 8px 0 0;position:relative}
+  .modalTopo{position:sticky;top:0;background:var(--papel);border-bottom:2px solid var(--tinta);padding:14px 16px;display:flex;align-items:center;gap:10px;z-index:2}
+  .modalTopo h3{font-family:var(--serif);font-size:19px;margin:0;flex:1}
+  .modalTopo button{appearance:none;background:transparent;border:1px solid var(--linha);border-radius:3px;padding:8px 12px;font-family:var(--mono);font-size:11px;color:var(--tinta2);cursor:pointer}
+  .modalCorpo{padding:14px 16px 30px}
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -179,8 +200,10 @@ var DIAS_C=["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
 var MESES=["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
 var ORDEM=[1,2,3,4,5,6,0];
 var CADAS={1:"Todo mês",2:"A cada 2 meses",3:"A cada 3 meses",4:"A cada 4 meses",6:"A cada 6 meses",12:"Uma vez por ano"};
+var HUMOR=["","Ruim","Fraco","Normal","Bom","Ótimo"];
+var TIPOS_PER=[["ferias","Férias"],["feriado","Feriado"],["folga","Folga"],["viagem","Viagem"]];
 
-var D=null,aba="hoje",vista=null,form=null,carimbou=false,periodo=28,catAberta=null;
+var D=null,aba="dia",vista=null,form=null,carimbou=false,periodo=28,catAberta=null,modal=null,dataSel=null,diarioN=14;
 
 /* ===== armazenamento ===== */
 var Store={
@@ -194,14 +217,13 @@ var Store={
     try{ window.localStorage.setItem(k,v); }catch(e){ console.warn("sem espaço",e); }
   }
 };
-function vazio(){return{v:3,categorias:CATS_BASE.slice(),tarefas:[],dias:{},semanas:{},timer:null,avisos:{ativo:false,antes:5}};}
+function vazio(){return{v:4,categorias:CATS_BASE.slice(),tarefas:[],periodos:[],dias:{},semanas:{},timer:null,avisos:{ativo:false,antes:5}};}
 function uid(){return"x"+Math.random().toString(36).slice(2,9);}
 var pend=null;
 function salvar(){var t=JSON.stringify(D);clearTimeout(pend);pend=setTimeout(function(){Store.gravar(CHAVE,t);},300);}
 
-/* migração do modelo antigo (7 listas por dia da semana) */
-function migrar(o){
-  var n={v:3,categorias:o.categorias||CATS_BASE.slice(),tarefas:[],dias:o.dias||{},semanas:o.semanas||{},
+function migrarV2(o){
+  var n={v:4,categorias:o.categorias||CATS_BASE.slice(),tarefas:[],periodos:[],dias:o.dias||{},semanas:o.semanas||{},
     timer:null,avisos:o.avisos||{ativo:false,antes:5}};
   var mapa={},idMap={};
   for(var g=0;g<7;g++){
@@ -231,15 +253,20 @@ function migrar(o){
 
 /* ===== datas ===== */
 function kD(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function deK(k){var p=String(k).split("-");return new Date(+p[0],+p[1]-1,+p[2]);}
 function kS(d){var x=new Date(d.getFullYear(),d.getMonth(),d.getDate());x.setDate(x.getDate()+4-(x.getDay()||7));
   var a=new Date(x.getFullYear(),0,1);return x.getFullYear()+"-S"+String(Math.ceil(((x-a)/86400000+1)/7)).padStart(2,"0");}
 function iniSem(d){var x=new Date(d.getFullYear(),d.getMonth(),d.getDate());var g=x.getDay();x.setDate(x.getDate()-(g===0?6:g-1));return x;}
-function br(k){var p=k.split("-");return p[2]+"/"+p[1];}
+function br(k){var p=String(k).split("-");return p[2]+"/"+p[1];}
 function hm(m){if(m==null)return"—";var h=Math.floor(m/60),x=Math.round(m%60);return h?h+"h"+(x?String(x).padStart(2,"0"):""):x+" min";}
-function relogio(s){var m=Math.floor(s/60);return String(m).padStart(2,"0")+":"+String(s%60).padStart(2,"0");}
+function cron(s){var h=Math.floor(s/3600),m=Math.floor(s%3600/60),g=s%60;
+  return (h?h+":"+String(m).padStart(2,"0"):String(m).padStart(2,"0"))+":"+String(g).padStart(2,"0");}
 function mins(h){var p=(h||"00:00").split(":");return (+p[0])*60+(+p[1]);}
 function hhmm(m){m=Math.max(0,Math.min(1439,Math.round(m)));return String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0");}
 function ultimoDia(a,m){return new Date(a,m+1,0).getDate();}
+function ehHoje(d){return kD(d)===kD(new Date());}
+function somaDias(d,n){return new Date(d.getFullYear(),d.getMonth(),d.getDate()+n);}
+function extenso(d){return DIAS_L[d.getDay()]+", "+d.getDate()+" de "+MESES[d.getMonth()];}
 
 /* ===== recorrência ===== */
 function alvoDoMes(ano,mes,rec){
@@ -252,10 +279,10 @@ function alvoDoMes(ano,mes,rec){
   return d;
 }
 function ocorreEm(t,d){
-  var k=kD(d);
+  var k=kD(d),r=t.rec||{tipo:"semanal",dias:[]};
   if(t.encerrada&&k>=t.encerrada)return false;
+  if(r.tipo==="unica")return r.data===k;
   if(t.inicio&&k<t.inicio)return false;
-  var r=t.rec||{tipo:"semanal",dias:[]};
   if(r.tipo==="semanal")return (r.dias||[]).indexOf(d.getDay())>=0;
   if(r.tipo==="mensal"){
     var cada=r.cada||1,an;
@@ -269,6 +296,7 @@ function ocorreEm(t,d){
 }
 function descreveRec(t){
   var r=t.rec||{};
+  if(r.tipo==="unica")return "só em "+br(r.data);
   if(r.tipo==="semanal"){
     var ds=(r.dias||[]).slice().sort(function(a,b){return (a===0?7:a)-(b===0?7:b);});
     if(!ds.length)return"sem dia";
@@ -278,7 +306,8 @@ function descreveRec(t){
   }
   if(r.tipo==="mensal"){
     var q=(r.diaMes===0)?"último dia":"dia "+r.diaMes;
-    return q+" · "+(CADAS[r.cada||1]||"todo mês").toLowerCase()+(r.util?" (dia útil)":"");
+    return q+" · "+(CADAS[r.cada||1]||"todo mês").toLowerCase()+(r.util?" (dia útil)":"")
+      +(t.inicio?" · a partir de "+br(t.inicio):"");
   }
   return"";
 }
@@ -288,12 +317,30 @@ function proximaOcorrencia(t,apartir){
   return null;
 }
 
+/* ===== períodos (férias, feriados, folgas) ===== */
+function periodosEm(d){
+  var k=kD(d);
+  return (D.periodos||[]).filter(function(p){return k>=p.ini&&k<=p.fim;});
+}
+function pausada(t,d){
+  var ps=periodosEm(d);
+  for(var i=0;i<ps.length;i++){
+    var p=ps[i];
+    if(!p.cats||!p.cats.length)return p;
+    if(p.cats.indexOf(t.cat)>=0)return p;
+  }
+  return null;
+}
+
 /* ===== registros ===== */
 function rDia(k){
-  if(!D.dias[k])D.dias[k]={feitos:{},falhos:{},min:false,nota:"",prio:["","",""],extras:[],avisados:{},excecoes:{}};
+  if(!D.dias[k])D.dias[k]={};
   var r=D.dias[k];
   if(!r.feitos)r.feitos={}; if(!r.falhos)r.falhos={}; if(!r.prio)r.prio=["","",""];
-  if(!r.extras)r.extras=[]; if(!r.avisados)r.avisados={}; if(!r.excecoes)r.excecoes={};
+  if(!r.prioIds)r.prioIds=[]; if(!r.extras)r.extras=[]; if(!r.avisados)r.avisados={};
+  if(!r.excecoes)r.excecoes={}; if(!r.parciais)r.parciais={}; if(!r.notasT)r.notasT={};
+  if(!r.diario)r.diario={humor:0,texto:"",bom:""};
+  if(r.min===undefined)r.min=false; if(r.nota===undefined)r.nota="";
   for(var i in r.feitos){ if(typeof r.feitos[i]==="string")r.feitos[i]={h:r.feitos[i],m:null}; }
   return r;
 }
@@ -306,9 +353,11 @@ function tarefasDe(d){
   var k=kD(d),r=D.dias[k],out=[];
   D.tarefas.forEach(function(t){
     if(!ocorreEm(t,d))return;
+    if(pausada(t,d))return;
     var ex=(r&&r.excecoes)?r.excecoes[t.id]:null;
     if(ex==="pular")return;
-    if(ex&&ex.hora)out.push({id:t.id,titulo:t.titulo,hora:ex.hora,dur:t.dur,cat:t.cat,minimo:t.minimo,projeto:t.projeto,movida:true});
+    if(ex&&ex.hora)out.push({id:t.id,titulo:t.titulo,hora:ex.hora,dur:(ex.dur!==undefined?ex.dur:t.dur),
+      cat:t.cat,minimo:t.minimo,projeto:t.projeto,movida:true});
     else out.push(t);
   });
   if(r&&r.extras)out=out.concat(r.extras);
@@ -320,7 +369,7 @@ function puladasDe(d){
   var out=[];
   Object.keys(r.excecoes).forEach(function(id){
     if(r.excecoes[id]!=="pular")return;
-    var t=acharT(id); if(t&&ocorreEm(t,d))out.push(t);
+    var t=acharT(id); if(t&&ocorreEm(t,d)&&!pausada(t,d))out.push(t);
   });
   return out;
 }
@@ -350,19 +399,19 @@ function pctSemDe(ref){
 function fimDe(t){return hhmm(mins(t.hora)+(t.dur||0));}
 function choca(a,b){ if(!a.dur||!b.dur)return false;
   var ai=mins(a.hora),af=ai+a.dur,bi=mins(b.hora),bf=bi+b.dur; return ai<bf&&bi<af; }
-function datasDe(t,n){
+function datasDe(t){
   var out=[],d=new Date();
-  for(var i=0;i<(n||120)&&out.length<12;i++){ if(ocorreEm(t,d))out.push(new Date(d)); d.setDate(d.getDate()+1); }
+  for(var i=0;i<400&&out.length<12;i++){ if(ocorreEm(t,d))out.push(new Date(d)); d.setDate(d.getDate()+1); }
   return out;
 }
 function conflitosDe(alvo,ignora){
   if(!alvo.dur)return[];
-  var achados={},datas=datasDe(alvo,400);
-  datas.forEach(function(d){
+  var achados={};
+  datasDe(alvo).forEach(function(d){
     D.tarefas.forEach(function(x){
       if(x.id===ignora||x.id===alvo.id||x.encerrada)return;
       if(!ocorreEm(x,d))return;
-      if(choca(x,alvo))achados[x.id]={t:x,quando:DIAS_C[d.getDay()]};
+      if(choca(x,alvo))achados[x.id]={t:x};
     });
   });
   return Object.keys(achados).map(function(k){return achados[k];});
@@ -404,15 +453,17 @@ function render(){
   raiz.appendChild(topo()); raiz.appendChild(abasEl());
   if(D.timer)raiz.appendChild(cronoBar());
   var p=el("div",{class:"painel"});
-  ({hoje:pHoje,semana:pSemana,rotina:pRotina,dados:pDados,guia:pGuia})[aba](p);
+  ({dia:pDia,semana:pSemana,rotina:pRotina,diario:pDiario,dados:pDados})[aba](p);
   raiz.appendChild(p);
-  raiz.appendChild(el("div",{class:"rodape",text:"salvo neste aparelho · faça backup na aba Dados"}));
+  raiz.appendChild(el("div",{class:"rodape",text:"salvo neste aparelho · backup na aba Dados"}));
+  if(modal)raiz.appendChild(modalEl());
   window.scrollTo(0,y);
 }
 function topo(){
   var h=new Date(),pr=prog(h),c=el("div",{class:"topo"});
   c.appendChild(el("div",{class:"eyebrow",text:"Minha agenda"}));
-  c.appendChild(el("h1",{class:"data",text:DIAS_L[h.getDay()]+", "+h.getDate()+" de "+MESES[h.getMonth()]}));
+  c.appendChild(el("h1",{class:"data",text:extenso(h)}));
+  c.appendChild(el("button",{class:"ajuda",text:"?","aria-label":"Ajuda",onclick:function(){modal="guia";render();}}));
   if(pr.t){
     var l=el("div",{class:"tallyLinha"}),tl=el("div",{class:"tally"}),r=D.dias[kD(h)];
     tarefasDe(h).forEach(function(t){
@@ -431,11 +482,23 @@ function topo(){
 }
 function abasEl(){
   var n=el("div",{class:"abas",role:"tablist"});
-  [["hoje","Hoje"],["semana","Semana"],["rotina","Rotina"],["dados","Dados"],["guia","Guia"]].forEach(function(a){
+  [["dia","Dia"],["semana","Semana"],["rotina","Rotina"],["diario","Diário"],["dados","Dados"]].forEach(function(a){
     n.appendChild(el("button",{role:"tab","aria-selected":aba===a[0]?"true":"false",text:a[1],
       onclick:function(){aba=a[0];form=null;window.scrollTo(0,0);render();}}));
   });
   return n;
+}
+function modalEl(){
+  var ov=el("div",{class:"modal",onclick:function(e){if(e.target===ov){modal=null;render();}}});
+  var cx=el("div",{class:"modalCx"});
+  var tp=el("div",{class:"modalTopo"});
+  tp.appendChild(el("h3",{text:modal==="guia"?"Como usar":"Ajuda"}));
+  tp.appendChild(el("button",{text:"Fechar",onclick:function(){modal=null;render();}}));
+  cx.appendChild(tp);
+  var co=el("div",{class:"modalCorpo"});
+  conteudoGuia(co);
+  cx.appendChild(co); ov.appendChild(cx);
+  return ov;
 }
 
 /* ===== avisos ===== */
@@ -475,24 +538,38 @@ function checarAvisos(){
 }
 setInterval(checarAvisos,25000);
 
-/* ===== cronômetro ===== */
+/* ===== cronômetro com pausa ===== */
+function segsCorridos(){ return D.timer?Math.floor((Date.now()-D.timer.ini)/1000)+(D.timer.base||0):0; }
 function cronoBar(){
   var ts=tarefasDe(new Date()),t=null;
   ts.forEach(function(x){if(x.id===D.timer.id)t=x;});
   var b=el("div",{class:"cronobar"});
   b.appendChild(el("span",{text:"▮▮"}));
   b.appendChild(el("div",{class:"nome",text:t?t.titulo:"Tarefa"}));
-  b.appendChild(el("b",{id:"crono",text:relogio(Math.floor((Date.now()-D.timer.ini)/1000))}));
-  b.appendChild(el("button",{text:"Parar",onclick:pararTimer}));
+  b.appendChild(el("b",{id:"crono",text:cron(segsCorridos())}));
+  b.appendChild(el("button",{text:"Pausar",onclick:function(){pausarTimer();render();}}));
+  b.appendChild(el("button",{text:"Concluir",onclick:concluirTimer}));
   return b;
 }
-function iniciarTimer(id){D.timer={id:id,ini:Date.now(),dia:kD(new Date())};salvar();render();}
-function pararTimer(){
+function iniciarTimer(id){
+  if(D.timer&&D.timer.id!==id)pausarTimer();
+  var r=rDia(kD(new Date()));
+  D.timer={id:id,ini:Date.now(),dia:kD(new Date()),base:r.parciais[id]||0};
+  salvar();render();
+}
+function pausarTimer(){
   if(!D.timer)return;
-  var min=Math.max(1,Math.round((Date.now()-D.timer.ini)/60000));
-  var r=rDia(D.timer.dia||kD(new Date())),antes=prog(new Date()).ok,a=new Date();
-  r.feitos[D.timer.id]={h:String(a.getHours()).padStart(2,"0")+":"+String(a.getMinutes()).padStart(2,"0"),m:min};
-  delete r.falhos[D.timer.id]; D.timer=null; salvar();
+  var r=rDia(D.timer.dia||kD(new Date()));
+  r.parciais[D.timer.id]=segsCorridos();
+  D.timer=null; salvar();
+}
+function concluirTimer(){
+  if(!D.timer)return;
+  var total=segsCorridos(),r=rDia(D.timer.dia||kD(new Date())),antes=prog(new Date()).ok,a=new Date();
+  r.feitos[D.timer.id]={h:String(a.getHours()).padStart(2,"0")+":"+String(a.getMinutes()).padStart(2,"0"),
+    m:Math.max(1,Math.round(total/60))};
+  delete r.falhos[D.timer.id]; delete r.parciais[D.timer.id];
+  D.timer=null; salvar();
   if(!antes&&prog(new Date()).ok)carimbou=true;
   render();
 }
@@ -503,7 +580,7 @@ function faltam(alvo){
 }
 setInterval(function(){
   if(!D)return;
-  if(D.timer){var e=document.getElementById("crono");if(e)e.textContent=relogio(Math.floor((Date.now()-D.timer.ini)/1000));}
+  if(D.timer){var e=document.getElementById("crono");if(e)e.textContent=cron(segsCorridos());}
   var b=document.querySelector(".proxima"),c=document.getElementById("cdown");
   if(b&&c&&b.dataset.alvo)c.textContent=faltam(parseInt(b.dataset.alvo,10));
 },1000);
@@ -539,22 +616,39 @@ function linhaAvisos(){
   return d;
 }
 
-/* ================= HOJE ================= */
-function pHoje(p){
-  var h=new Date(),k=kD(h),r=rDia(k),ts=tarefasDe(h),pu=puladasDe(h);
+/* ================= DIA ================= */
+function pDia(p){
+  if(!dataSel)dataSel=kD(new Date());
+  var d=deK(dataSel),hoje=ehHoje(d),k=dataSel,r=rDia(k),ts=tarefasDe(d),pu=puladasDe(d);
+
+  var nav=el("div",{class:"navdia"});
+  nav.appendChild(el("button",{text:"◀",onclick:function(){dataSel=kD(somaDias(d,-1));form=null;render();}}));
+  nav.appendChild(el("div",{class:"meio",text:hoje?"Hoje":(kD(somaDias(new Date(),1))===k?"Amanhã":
+    (kD(somaDias(new Date(),-1))===k?"Ontem":extenso(d)))}));
+  nav.appendChild(el("button",{text:"▶",onclick:function(){dataSel=kD(somaDias(d,1));form=null;render();}}));
+  if(!hoje)nav.appendChild(el("button",{text:"hoje",onclick:function(){dataSel=kD(new Date());form=null;render();}}));
+  p.appendChild(nav);
+  if(!hoje)p.appendChild(el("div",{class:"grupo",style:"margin-top:0"},[el("span",{text:extenso(d)})]));
+
+  var ps=periodosEm(d);
+  ps.forEach(function(x){
+    p.appendChild(el("div",{class:"aviso amb",html:"<strong>"+x.nome+"</strong> — de "+br(x.ini)+" a "+br(x.fim)+". "+
+      (x.cats&&x.cats.length?("Pausado: "+x.cats.map(function(c){return cat(c).nome;}).join(", ")+"."):"Toda a rotina está pausada.")+
+      " Nada disso conta como falha."}));
+  });
+
   if(!ts.length&&!pu.length){
     var v=el("div",{class:"vazio"});
-    v.appendChild(el("h3",{text:temRotina()?"Nada marcado para hoje":"Sua agenda está em branco"}));
-    v.appendChild(el("p",{text:temRotina()?"Você não tem tarefas para "+DIAS_L[h.getDay()].toLowerCase()+".":"Monte a rotina do jeito que a sua vida é. Comece por pouco."}));
-    v.appendChild(el("button",{class:"btn cheio",text:"Montar a rotina",onclick:function(){aba="rotina";vista=h.getDay();render();}}));
-    p.appendChild(v); p.appendChild(acoesHoje(r));
-    if(form&&form.indexOf("extra")===0)p.appendChild(formExtra(r,false,form.split(":")[1]));
-    if(form==="impr")p.appendChild(formExtra(r,true));
+    v.appendChild(el("h3",{text:ps.length?"Dia livre":(temRotina()?"Nada marcado":"Sua agenda está em branco")}));
+    v.appendChild(el("p",{text:ps.length?"Aproveite.":(temRotina()?"Você não tem tarefas para "+DIAS_L[d.getDay()].toLowerCase()+".":"Monte a rotina do jeito que a sua vida é. Comece por pouco.")}));
+    if(!temRotina())v.appendChild(el("button",{class:"btn cheio",text:"Montar a rotina",onclick:function(){aba="rotina";vista=d.getDay();render();}}));
+    p.appendChild(v); p.appendChild(acoesDia(r,hoje,d));
+    if(form&&form.indexOf("extra")===0)p.appendChild(formExtra(r,false,form.split(":")[1],d));
+    if(form==="impr")p.appendChild(formExtra(r,true,null,d));
     return;
   }
   if(r.min)p.appendChild(el("div",{class:"aviso",html:"<strong>Modo dia difícil.</strong> As tarefas estão na versão mínima. Fazer o mínimo conta como feito."}));
-  var bn=bannerProxima(ts,r); if(bn)p.appendChild(bn);
-  p.appendChild(linhaAvisos());
+  if(hoje){ var bn=bannerProxima(ts,r); if(bn)p.appendChild(bn); p.appendChild(linhaAvisos()); }
 
   var g=null;
   ts.forEach(function(t){
@@ -564,19 +658,20 @@ function pHoje(p){
       p.appendChild(el("div",{class:"grupo"},[el("span",{text:gr}),
         el("span",{text:doG.filter(function(x){return r.feitos[x.id];}).length+"/"+doG.length})]));
     }
-    p.appendChild(linha(t,r));
+    p.appendChild(linha(t,r,hoje,d));
     if(form==="motivo:"+t.id)p.appendChild(formMotivo(t,r));
-    if(form==="soHoje:"+t.id)p.appendChild(formSoHoje(t,r));
+    if(form==="soDia:"+t.id)p.appendChild(formSoDia(t,r,d));
+    if(form==="nota:"+t.id)p.appendChild(formNotaTarefa(t,r));
   });
 
   if(pu.length){
-    p.appendChild(el("div",{class:"grupo"},[el("span",{text:"Puladas hoje"}),el("span",{text:String(pu.length)})]));
+    p.appendChild(el("div",{class:"grupo"},[el("span",{text:"Tiradas deste dia"}),el("span",{text:String(pu.length)})]));
     pu.forEach(function(t){
       var L=el("div",{class:"linha pulada"});
       L.appendChild(el("div",{class:"hora",text:t.hora}));
       var m=el("div",{});
       m.appendChild(el("div",{class:"titulo",text:t.titulo}));
-      m.appendChild(el("div",{class:"meta"},[el("span",{class:"faixa",text:"vaga aberta · volta no próximo dia normal"})]));
+      m.appendChild(el("div",{class:"meta"},[el("span",{class:"faixa",text:"vaga aberta · continua na rotina"})]));
       L.appendChild(m);
       L.appendChild(el("button",{class:"pill",style:"justify-self:end",text:"voltar",
         onclick:function(){delete r.excecoes[t.id];salvar();render();}}));
@@ -584,76 +679,124 @@ function pHoje(p){
     });
   }
 
-  var vg=vagasDe(h,45);
+  var vg=vagasDe(d,45);
   if(vg.length){
-    p.appendChild(el("div",{class:"grupo"},[el("span",{text:"Vagas livres hoje"})]));
+    p.appendChild(el("div",{class:"grupo"},[el("span",{text:"Vagas livres"})]));
     var cv=el("div",{class:"chips",style:"padding:8px 0"});
     vg.slice(0,6).forEach(function(v){
-      cv.appendChild(el("button",{class:"chip",text:hhmm(v.ini)+"–"+hhmm(v.fim)+" ("+hm(v.fim-v.ini)+")",
+      cv.appendChild(el("button",{class:"chip mini",text:hhmm(v.ini)+"–"+hhmm(v.fim)+" ("+hm(v.fim-v.ini)+")",
         onclick:function(){form="extra:"+v.ini;render();}}));
     });
     p.appendChild(cv);
   }
 
-  p.appendChild(acoesHoje(r));
-  if(form&&form.indexOf("extra")===0)p.appendChild(formExtra(r,false,form.split(":")[1]));
-  if(form==="impr")p.appendChild(formExtra(r,true));
+  p.appendChild(acoesDia(r,hoje,d));
+  if(form&&form.indexOf("extra")===0)p.appendChild(formExtra(r,false,form.split(":")[1],d));
+  if(form==="impr")p.appendChild(formExtra(r,true,null,d));
 
+  /* prioridades por seleção */
   var cp=el("div",{class:"campo"});
-  cp.appendChild(el("label",{text:"As 3 prioridades de hoje"}));
-  [0,1,2].forEach(function(i){
-    var inp=el("input",{type:"text",placeholder:i===0?"a que você garante mesmo se o dia virar":"",
-      oninput:function(e){r.prio[i]=e.target.value;salvar();}});
-    inp.value=r.prio[i]||"";
-    cp.appendChild(el("div",{class:"prio"},[el("span",{text:(i+1)+"."}),inp]));
+  cp.appendChild(el("label",{text:"As 3 prioridades do dia"}));
+  cp.appendChild(el("p",{class:"dica",style:"margin:0 0 8px",text:"Toque nas tarefas que você garante mesmo se o dia virar."}));
+  var ch=el("div",{class:"chips"});
+  ts.forEach(function(t){
+    var on=r.prioIds.indexOf(t.id)>=0;
+    var b=el("button",{class:"chip mini","aria-pressed":on?"true":"false",text:t.titulo});
+    b.addEventListener("click",function(){
+      var i=r.prioIds.indexOf(t.id);
+      if(i>=0)r.prioIds.splice(i,1);
+      else{ if(r.prioIds.length>=3){alert("Três é o limite. Tire uma antes de pôr outra.");return;} r.prioIds.push(t.id); }
+      salvar();render();
+    });
+    ch.appendChild(b);
   });
+  cp.appendChild(ch);
+  var liv=el("input",{type:"text",style:"margin-top:10px",placeholder:"ou escreva algo que não é tarefa da agenda",
+    oninput:function(e){r.prio[0]=e.target.value;salvar();}});
+  liv.value=r.prio[0]||"";
+  cp.appendChild(liv);
   p.appendChild(cp);
+
   var cn=el("div",{class:"campo"});
   cn.appendChild(el("label",{text:"Uma linha: o que atrapalhou"}));
   var ta=el("textarea",{placeholder:"Sem julgamento. Só o fato.",oninput:function(e){r.nota=e.target.value;salvar();}});
   ta.value=r.nota||""; cn.appendChild(ta); p.appendChild(cn);
 }
-function acoesHoje(r){
+function acoesDia(r,hoje,d){
   var a=el("div",{class:"acoes"});
   a.appendChild(el("button",{class:"btn"+(r.min?" cheio":""),text:r.min?"Voltar ao normal":"Dia difícil",
     onclick:function(){r.min=!r.min;salvar();render();}}));
-  a.appendChild(el("button",{class:"btn leve",text:"+ Tarefa de hoje",onclick:function(){form=(form&&form.indexOf("extra")===0)?null:"extra";render();}}));
-  a.appendChild(el("button",{class:"btn leve",text:"⚡ Chegou do nada",onclick:function(){form=form==="impr"?null:"impr";render();}}));
+  a.appendChild(el("button",{class:"btn leve",text:"+ Tarefa do dia",onclick:function(){form=(form&&form.indexOf("extra")===0)?null:"extra";render();}}));
+  if(hoje)a.appendChild(el("button",{class:"btn leve",text:"⚡ Chegou do nada",onclick:function(){form=form==="impr"?null:"impr";render();}}));
   return a;
 }
 function grupoDe(h){var x=parseInt((h||"12:00").split(":")[0],10);return x<12?"Manhã":(x<18?"Tarde":"Noite");}
 
-function linha(t,r){
-  var f=r.feitos[t.id],nf=r.falhos[t.id],c=cat(t.cat);
+function linha(t,r,hoje,d){
+  var f=r.feitos[t.id],nf=r.falhos[t.id],c=cat(t.cat),parcial=r.parciais[t.id]||0;
+  var rodando=D.timer&&D.timer.id===t.id;
   var ag=new Date(),mn=ag.getHours()*60+ag.getMinutes();
-  var rodando=!f&&!nf&&!t.imprevisto&&t.dur&&mn>=mins(t.hora)&&mn<mins(t.hora)+t.dur;
-  var L=el("div",{class:"linha"+(f?" feito":"")+(nf?" falho":"")+(t.imprevisto?" impr":"")+(rodando?" agora":"")});
+  var agora=hoje&&!f&&!nf&&t.dur&&mn>=mins(t.hora)&&mn<mins(t.hora)+t.dur;
+  var ehPrio=r.prioIds.indexOf(t.id)>=0;
+  var L=el("div",{class:"linha"+(f?" feito":"")+(nf?" falho":"")+(t.imprevisto?" impr":"")
+    +(rodando?" agora":(parcial&&!f?" pausada":(agora?" agora":"")))+(ehPrio?" prio":"")});
   L.appendChild(el("div",{class:"hora",text:t.imprevisto?"⚡":(t.hora||"—")}));
   var m=el("div",{class:"alvo"});
   var txt=(r.min&&t.minimo&&!f&&!nf)?t.minimo.charAt(0).toUpperCase()+t.minimo.slice(1):t.titulo;
   m.appendChild(el("div",{class:"titulo",text:txt+(t.projeto?" ⏳":"")}));
   var meta=el("div",{class:"meta"});
   meta.appendChild(el("span",{class:"cat",text:c.id,style:"color:"+c.cor,title:c.nome}));
-  if(f)meta.appendChild(el("span",{class:"marca",text:"✓ "+f.h+(f.m?" · "+f.m+" min":"")}));
-  else if(nf)meta.appendChild(el("span",{class:"marcaN",text:"não deu: "+(nf.motivo||"—")}));
-  else{
-    if(t.dur)meta.appendChild(el("span",{class:"faixa",text:t.hora+"–"+fimDe(t)+(t.movida?" (só hoje)":"")}));
+  if(f){
+    meta.appendChild(el("span",{class:"marca",text:"✓ "+f.h+(f.m?" · "+f.m+" min":"")}));
+    meta.appendChild(el("button",{class:"pill",text:r.notasT[t.id]?"✎ nota":"✎ anotar",
+      onclick:function(e){e.stopPropagation();form="nota:"+t.id;render();}}));
+  }else if(nf){
+    meta.appendChild(el("span",{class:"marcaN",text:"não deu: "+(nf.motivo||"—")}));
+  }else{
+    if(t.dur)meta.appendChild(el("span",{class:"faixa",text:t.hora+"–"+fimDe(t)+(t.movida?" (só neste dia)":"")}));
+    if(parcial)meta.appendChild(el("span",{class:"marcaP",text:"⏸ "+cron(parcial)}));
     if(t.minimo&&!r.min)meta.appendChild(el("span",{class:"minimo",text:"mín: "+t.minimo}));
-    meta.appendChild(el("button",{class:"pill rox",text:"▶ cronometrar",onclick:function(e){e.stopPropagation();iniciarTimer(t.id);}}));
+    if(hoje)meta.appendChild(el("button",{class:rodando?"pill amb":"pill rox",
+      text:rodando?"▮▮ rodando":(parcial?"▶ retomar":"▶ cronometrar"),
+      onclick:function(e){e.stopPropagation();if(rodando)pausarTimer();else iniciarTimer(t.id);render();}}));
     meta.appendChild(el("button",{class:"pill rub",text:"não deu",onclick:function(e){e.stopPropagation();form="motivo:"+t.id;render();}}));
-    if(!t.imprevisto)meta.appendChild(el("button",{class:"pill",text:"só hoje",onclick:function(e){e.stopPropagation();form="soHoje:"+t.id;render();}}));
+    if(acharT(t.id))meta.appendChild(el("button",{class:"pill",text:hoje?"só hoje":"só neste dia",
+      onclick:function(e){e.stopPropagation();form="soDia:"+t.id;render();}}));
+    meta.appendChild(el("button",{class:"pill",text:"✎",onclick:function(e){e.stopPropagation();form="nota:"+t.id;render();}}));
   }
-  m.appendChild(meta); L.appendChild(m);
+  m.appendChild(meta);
+  if(r.notasT[t.id])m.appendChild(el("div",{class:"anot",text:r.notasT[t.id]}));
+  L.appendChild(m);
   var cx=el("div",{class:"caixa"}); L.appendChild(cx);
   function toca(){
     var antes=prog(new Date()).ok;
     if(r.falhos[t.id])delete r.falhos[t.id];
     else if(r.feitos[t.id])delete r.feitos[t.id];
-    else{var a=new Date();r.feitos[t.id]={h:String(a.getHours()).padStart(2,"0")+":"+String(a.getMinutes()).padStart(2,"0"),m:null};}
+    else{
+      if(D.timer&&D.timer.id===t.id){concluirTimer();return;}
+      var a=new Date(),pm=r.parciais[t.id]?Math.max(1,Math.round(r.parciais[t.id]/60)):null;
+      r.feitos[t.id]={h:String(a.getHours()).padStart(2,"0")+":"+String(a.getMinutes()).padStart(2,"0"),m:pm};
+      delete r.parciais[t.id];
+    }
     salvar(); if(!antes&&prog(new Date()).ok)carimbou=true; render();
   }
   cx.addEventListener("click",toca); m.addEventListener("click",toca);
   return L;
+}
+
+function formNotaTarefa(t,r){
+  var v=r.notasT[t.id]||"",f=el("div",{class:"form"});
+  f.appendChild(el("h4",{text:"O que eu fiz"}));
+  f.appendChild(el("p",{class:"dica",style:"margin:0 0 10px",text:t.titulo}));
+  var ta=el("textarea",{placeholder:"Ex.: qualifiquei 12 títulos, 3 ficaram pendentes de certidão",oninput:function(e){v=e.target.value;}});
+  ta.value=r.notasT[t.id]||""; f.appendChild(ta);
+  var ac=el("div",{class:"acoes"});
+  ac.appendChild(el("button",{class:"btn cheio",text:"Salvar",onclick:function(){
+    if(v.trim())r.notasT[t.id]=v.trim(); else delete r.notasT[t.id];
+    form=null;salvar();render();}}));
+  ac.appendChild(el("button",{class:"btn leve",text:"Cancelar",onclick:function(){form=null;render();}}));
+  f.appendChild(ac);
+  return f;
 }
 
 function formMotivo(t,r){
@@ -678,24 +821,27 @@ function formMotivo(t,r){
   return f;
 }
 
-function formSoHoje(t,r){
-  var base=acharT(t.id),nova=t.hora;
+function formSoDia(t,r,d){
+  var base=acharT(t.id),nova=t.hora,novaDur=(t.dur||0);
   var f=el("div",{class:"form"});
-  f.appendChild(el("h4",{text:"Mudar só hoje"}));
-  f.appendChild(el("p",{class:"dica",style:"margin:0 0 12px",text:"A rotina fixa não muda. No próximo dia normal tudo volta ao lugar."}));
+  f.appendChild(el("h4",{text:"Mudar só em "+br(kD(d))}));
+  f.appendChild(el("p",{class:"dica",style:"margin:0 0 12px",text:"A rotina fixa continua igual. Nos outros dias ela aparece normal."}));
   var ac1=el("div",{class:"chips"});
-  ac1.appendChild(el("button",{class:"chip",text:"Pular hoje (abre a vaga)",onclick:function(){
+  ac1.appendChild(el("button",{class:"chip",text:"Tirar deste dia (abre a vaga)",onclick:function(){
     r.excecoes[t.id]="pular";delete r.feitos[t.id];delete r.falhos[t.id];form=null;salvar();render();}}));
   f.appendChild(ac1);
   var ch=el("div",{class:"campo"});
-  ch.appendChild(el("label",{text:"Ou mover para outro horário hoje"}));
+  ch.appendChild(el("label",{text:"Ou mudar horário e duração neste dia"}));
   var ih=el("input",{type:"time",value:t.hora,onchange:function(e){nova=e.target.value;}});
-  ch.appendChild(ih);
-  var vg=vagasDe(new Date(),t.dur||30);
+  var idu=el("input",{type:"number",min:"0",step:"5",value:t.dur||"",oninput:function(e){novaDur=parseInt(e.target.value,10)||0;}});
+  ch.appendChild(el("div",{class:"duo"},[
+    el("div",{},[el("label",{class:"rotulo",text:"Começa"}),ih]),
+    el("div",{},[el("label",{class:"rotulo",text:"Minutos"}),idu])]));
+  var vg=vagasDe(d,t.dur||30);
   if(vg.length){
     var sug=el("div",{class:"chips",style:"margin-top:8px"});
     vg.slice(0,4).forEach(function(v){
-      sug.appendChild(el("button",{class:"chip",text:hhmm(v.ini),onclick:function(){nova=hhmm(v.ini);ih.value=nova;}}));
+      sug.appendChild(el("button",{class:"chip mini",text:hhmm(v.ini),onclick:function(){nova=hhmm(v.ini);ih.value=nova;}}));
     });
     ch.appendChild(sug);
   }
@@ -705,23 +851,23 @@ function formSoHoje(t,r){
     enc.appendChild(el("label",{text:"Tarefa com prazo"}));
     enc.appendChild(el("button",{class:"btn largo",text:"✔ Concluir de vez",onclick:function(){
       if(!confirm("Encerrar \""+base.titulo+"\"? Ela some da agenda a partir de amanhã; o histórico fica."))return;
-      base.encerrada=kD(new Date(Date.now()+86400000));form=null;salvar();render();}}));
+      base.encerrada=kD(somaDias(new Date(),1));form=null;salvar();render();}}));
     f.appendChild(enc);
   }
   var ac=el("div",{class:"acoes"});
-  ac.appendChild(el("button",{class:"btn cheio",text:"Mover só hoje",onclick:function(){
-    r.excecoes[t.id]={hora:nova};form=null;salvar();render();}}));
+  ac.appendChild(el("button",{class:"btn cheio",text:"Aplicar só neste dia",onclick:function(){
+    r.excecoes[t.id]={hora:nova,dur:novaDur};form=null;salvar();render();}}));
   ac.appendChild(el("button",{class:"btn leve",text:"Cancelar",onclick:function(){form=null;render();}}));
   f.appendChild(ac);
   return f;
 }
 
-function formExtra(r,imprevisto,horaSug){
+function formExtra(r,imprevisto,horaSug,d){
   var a=new Date();
-  var e={hora:horaSug?hhmm(parseInt(horaSug,10)):String(a.getHours()).padStart(2,"0")+":"+String(a.getMinutes()).padStart(2,"0"),
-    titulo:"",cat:D.categorias[0].id,dur:""};
+  var e={hora:horaSug?hhmm(parseInt(horaSug,10)):(ehHoje(d)?String(a.getHours()).padStart(2,"0")+":"+String(a.getMinutes()).padStart(2,"0"):"09:00"),
+    titulo:"",cat:D.categorias[0].id,dur:"",crono:!!imprevisto};
   var f=el("div",{class:"form"});
-  f.appendChild(el("h4",{text:imprevisto?"Chegou do nada":"Tarefa só de hoje"}));
+  f.appendChild(el("h4",{text:imprevisto?"Chegou do nada":"Tarefa só de "+br(kD(d))}));
   if(imprevisto)f.appendChild(el("p",{class:"dica",style:"margin:0 0 12px",text:"Entra na estatística de imprevistos — é assim que você descobre quanto do seu dia não é seu."}));
   f.appendChild(campoTexto("O que é","",function(v){e.titulo=v;},imprevisto?"Ex.: cliente apareceu sem aviso":"Ex.: ligar para o contador"));
   var ih=el("input",{type:"time",value:e.hora,onchange:function(ev){e.hora=ev.target.value;}});
@@ -730,11 +876,22 @@ function formExtra(r,imprevisto,horaSug){
     el("div",{},[el("label",{class:"rotulo",text:"Hora"}),ih]),
     el("div",{},[el("label",{class:"rotulo",text:"Minutos"}),idu])])]));
   f.appendChild(campoCategoria(e.cat,function(v){e.cat=v;}));
+  if(imprevisto&&ehHoje(d)){
+    var cc=el("div",{class:"campo"});
+    var b=el("button",{class:"chip","aria-pressed":"true",text:"▶ Já começar a cronometrar"});
+    b.addEventListener("click",function(){e.crono=!e.crono;b.setAttribute("aria-pressed",e.crono?"true":"false");});
+    cc.appendChild(el("div",{class:"chips"},[b]));
+    cc.appendChild(el("p",{class:"dica",text:D.timer?"A tarefa que está rodando agora será pausada e você pode retomar depois.":"Útil quando você não sabe quanto vai demorar."}));
+    f.appendChild(cc);
+  }
   var ac=el("div",{class:"acoes"});
   ac.appendChild(el("button",{class:"btn cheio",text:"Adicionar",onclick:function(){
     if(!e.titulo.trim())return;
-    r.extras.push({id:uid(),hora:e.hora,titulo:e.titulo.trim(),cat:e.cat,minimo:"",dur:parseInt(e.dur,10)||0,imprevisto:!!imprevisto});
-    form=null;salvar();render();}}));
+    var novo={id:uid(),hora:e.hora,titulo:e.titulo.trim(),cat:e.cat,minimo:"",dur:parseInt(e.dur,10)||0,imprevisto:!!imprevisto};
+    r.extras.push(novo);
+    form=null;
+    if(e.crono&&ehHoje(d))iniciarTimer(novo.id); else {salvar();render();}
+  }}));
   ac.appendChild(el("button",{class:"btn leve",text:"Cancelar",onclick:function(){form=null;render();}}));
   f.appendChild(ac);
   return f;
@@ -745,15 +902,19 @@ function pSemana(p){
   var h=new Date(),ini=iniSem(h),s=rSem(kS(h));
   var g=el("div",{class:"grade"});
   for(var i=0;i<7;i++){
-    var d=new Date(ini.getFullYear(),ini.getMonth(),ini.getDate()+i);
-    var fut=kD(d)>kD(h),pr=fut?{pct:0,ok:false,min:false,t:tarefasDe(d).length}:prog(d);
-    var c=el("div",{class:"cel"+(pr.ok?" ok":"")+(kD(d)===kD(h)?" hoje":"")});
-    c.appendChild(el("b",{text:DIAS_C[d.getDay()]}));
-    c.appendChild(el("div",{class:"pct",text:(fut||!pr.t)?"·":pr.pct+"%"}));
-    c.appendChild(el("div",{class:"selo",text:pr.ok?(pr.min?"mín":"ok"):""}));
-    g.appendChild(c);
+    (function(){
+      var d=new Date(ini.getFullYear(),ini.getMonth(),ini.getDate()+i);
+      var fut=kD(d)>kD(h),pr=fut?{pct:0,ok:false,min:false,t:tarefasDe(d).length}:prog(d);
+      var c=el("div",{class:"cel"+(pr.ok?" ok":"")+(kD(d)===kD(h)?" hoje":""),
+        onclick:function(){dataSel=kD(d);aba="dia";form=null;window.scrollTo(0,0);render();}});
+      c.appendChild(el("b",{text:DIAS_C[d.getDay()]}));
+      c.appendChild(el("div",{class:"pct",text:(fut||!pr.t)?"·":pr.pct+"%"}));
+      c.appendChild(el("div",{class:"selo",text:pr.ok?(pr.min?"mín":"ok"):(periodosEm(d).length?"folga":"")}));
+      g.appendChild(c);
+    })();
   }
   p.appendChild(g);
+  p.appendChild(el("p",{class:"dica",style:"margin-bottom:4px",text:"Toque num dia para abrir e planejar."}));
   var atual=pctSemDe(h);
   var passada=pctSemDe(new Date(ini.getFullYear(),ini.getMonth(),ini.getDate()-3));
   p.appendChild(el("div",{class:"placar"},[
@@ -761,30 +922,39 @@ function pSemana(p){
     el("div",{},[el("b",{text:String(seq())}),el("span",{text:"dias seguidos"})])]));
   if(atual.pct>=70)p.appendChild(el("div",{class:"aviso",html:"<strong>Meta batida.</strong> O que vier agora é bônus, não obrigação."}));
   else if(atual.dias>=4&&atual.pct<50&&passada.dias>=4&&passada.pct<50)
-    p.appendChild(el("div",{class:"aviso rub",html:"<strong>Duas semanas abaixo de 50%.</strong> Quase sempre isso é rotina grande demais, não falta de disciplina. Vá em Rotina e corte duas tarefas — é mais fácil voltar a subir de um plano pequeno que funciona."}));
+    p.appendChild(el("div",{class:"aviso rub",html:"<strong>Duas semanas abaixo de 50%.</strong> Quase sempre isso é rotina grande demais, não falta de disciplina. Vá em Rotina e corte duas tarefas."}));
 
   var proximos=[];
   D.tarefas.forEach(function(t){
-    if(t.encerrada||!t.rec||t.rec.tipo!=="mensal")return;
+    if(t.encerrada||!t.rec||t.rec.tipo==="semanal")return;
     var pr=proximaOcorrencia(t,h);
     if(pr){var dd=Math.round((pr-new Date(h.getFullYear(),h.getMonth(),h.getDate()))/86400000);
-      if(dd<=31)proximos.push({t:t,d:pr,dd:dd});}
+      if(dd<=45)proximos.push({t:t,d:pr,dd:dd});}
   });
   if(proximos.length){
     proximos.sort(function(a,b){return a.dd-b.dd;});
-    p.appendChild(el("div",{class:"grupo"},[el("span",{text:"Chegando no mês"})]));
-    proximos.slice(0,8).forEach(function(o){
+    p.appendChild(el("div",{class:"grupo"},[el("span",{text:"Chegando"})]));
+    proximos.slice(0,10).forEach(function(o){
       p.appendChild(el("div",{class:"statLinha"},[el("div",{class:"statTopo"},
         [el("b",{text:o.t.titulo}),el("span",{text:o.dd===0?"hoje":(o.dd===1?"amanhã":"em "+o.dd+" dias · "+br(kD(o.d)))})])]));
+    });
+  }
+  var pers=(D.periodos||[]).filter(function(x){return x.fim>=kD(h);}).sort(function(a,b){return a.ini.localeCompare(b.ini);});
+  if(pers.length){
+    p.appendChild(el("div",{class:"grupo"},[el("span",{text:"Férias e folgas"})]));
+    pers.slice(0,6).forEach(function(x){
+      p.appendChild(el("div",{class:"statLinha"},[el("div",{class:"statTopo"},
+        [el("b",{text:x.nome}),el("span",{text:br(x.ini)+" a "+br(x.fim)})])]));
     });
   }
 
   var cp=el("div",{class:"campo"});
   cp.appendChild(el("label",{text:"As 3 prioridades da semana"}));
   [0,1,2].forEach(function(i){
-    var inp=el("input",{type:"text",placeholder:"no máximo uma por categoria",oninput:function(e){s.prio[i]=e.target.value;salvar();}});
+    var inp=el("input",{type:"text",style:"margin-bottom:7px",placeholder:"no máximo uma por categoria",
+      oninput:function(e){s.prio[i]=e.target.value;salvar();}});
     inp.value=s.prio[i]||"";
-    cp.appendChild(el("div",{class:"prio"},[el("span",{text:(i+1)+"."}),inp]));
+    cp.appendChild(inp);
   });
   p.appendChild(cp);
   var cr=el("div",{class:"campo"});
@@ -811,16 +981,19 @@ function pRotina(p){
   });
   p.appendChild(sel);
   var sel2=el("div",{class:"chips",style:"margin-bottom:14px"});
-  sel2.appendChild(el("button",{class:"chip","aria-pressed":vista==="mes"?"true":"false",text:"Mensais e trimestrais",
-    onclick:function(){vista="mes";form=null;render();}}));
-  sel2.appendChild(el("button",{class:"chip","aria-pressed":vista==="fim"?"true":"false",text:"Encerradas",
-    onclick:function(){vista="fim";form=null;render();}}));
+  [["mes","Datas e mensais"],["fim","Encerradas"],["per","Férias e folgas"],["cats","Categorias"]].forEach(function(o){
+    sel2.appendChild(el("button",{class:"chip mini","aria-pressed":vista===o[0]?"true":"false",text:o[1],
+      onclick:function(){vista=o[0];form=null;render();}}));
+  });
   p.appendChild(sel2);
+
+  if(vista==="per"){ painelPeriodos(p); return; }
+  if(vista==="cats"){ painelCategorias(p); return; }
 
   var lista,titulo;
   if(vista==="mes"){
-    lista=D.tarefas.filter(function(t){return !t.encerrada&&t.rec&&t.rec.tipo==="mensal";});
-    titulo="Mensais e trimestrais";
+    lista=D.tarefas.filter(function(t){return !t.encerrada&&t.rec&&(t.rec.tipo==="mensal"||t.rec.tipo==="unica");});
+    titulo="Datas marcadas e mensais";
   }else if(vista==="fim"){
     lista=D.tarefas.filter(function(t){return t.encerrada;});
     titulo="Encerradas";
@@ -833,7 +1006,7 @@ function pRotina(p){
     el("span",{text:lista.length+" · "+hm(lista.reduce(function(a,t){return a+(t.dur||0);},0))})]));
 
   if(!lista.length)p.appendChild(el("p",{class:"dica",style:"padding:14px 0",
-    text:vista==="fim"?"Nada encerrado ainda.":(vista==="mes"?"Nenhuma tarefa mensal. Use para o que é de início de mês ou de 3 em 3 meses.":"Nenhuma tarefa neste dia. Comece pelas 3 ou 4 que você faria mesmo sem agenda.")}));
+    text:vista==="fim"?"Nada encerrado ainda.":(vista==="mes"?"Nada aqui. Use para o que é de início de mês, de 3 em 3 meses, ou tem data marcada.":"Nenhuma tarefa neste dia.")}));
 
   lista.forEach(function(t,i){
     var c=cat(t.cat);
@@ -854,7 +1027,7 @@ function pRotina(p){
     }else{
       r.appendChild(el("button",{class:"pill",style:"justify-self:end;border-radius:3px;padding:7px 9px",text:"×",
         onclick:function(e){e.stopPropagation();
-          if(!confirm("Apagar \""+t.titulo+"\" de vez? Se ela apenas terminou, prefira Encerrar — assim o histórico continua fazendo sentido."))return;
+          if(!confirm("Apagar \""+t.titulo+"\" de vez? Se ela apenas terminou, prefira Encerrar."))return;
           D.tarefas=D.tarefas.filter(function(x){return x.id!==t.id;});salvar();render();}}));
     }
     m.addEventListener("click",function(){form="ed:"+t.id;render();});
@@ -873,31 +1046,199 @@ function pRotina(p){
     p.appendChild(ac);
     if(form==="nova")p.appendChild(formTarefa(null));
   }
+}
 
+function painelCategorias(p){
+  p.appendChild(el("div",{class:"grupo"},[el("span",{text:"Categorias"}),el("span",{text:String(D.categorias.length)})]));
+  p.appendChild(el("p",{class:"dica",style:"margin-bottom:6px",text:"Toque para renomear ou excluir."}));
+  D.categorias.forEach(function(c){
+    var usos=D.tarefas.filter(function(t){return t.cat===c.id;}).length;
+    var L=el("div",{class:"statLinha",style:"cursor:pointer"});
+    L.appendChild(el("div",{class:"statTopo"},[
+      el("b",{text:c.nome,style:"color:"+c.cor}),
+      el("span",{text:c.id+" · "+usos+(usos===1?" tarefa":" tarefas")})]));
+    L.addEventListener("click",function(){form=(form==="cat:"+c.id)?null:("cat:"+c.id);render();});
+    p.appendChild(L);
+    if(form==="cat:"+c.id)p.appendChild(formEditarCat(c,usos));
+  });
+  var ac=el("div",{class:"acoes"});
+  ac.appendChild(el("button",{class:"btn cheio largo",text:"+ Nova categoria",onclick:function(){form=form==="novacat"?null:"novacat";render();}}));
+  p.appendChild(ac);
+  if(form==="novacat")p.appendChild(formNovaCat());
+}
+function formEditarCat(c,usos){
+  var nome=c.nome,destino=null,f=el("div",{class:"form"});
+  f.appendChild(el("h4",{text:"Categoria "+c.id}));
+  f.appendChild(campoTexto("Nome",c.nome,function(v){nome=v;}));
+  var ac=el("div",{class:"acoes"});
+  ac.appendChild(el("button",{class:"btn cheio",text:"Renomear",onclick:function(){
+    if(!nome.trim())return; c.nome=nome.trim(); form=null; salvar(); render();}}));
+  f.appendChild(ac);
+  var del=el("div",{class:"campo"});
+  del.appendChild(el("label",{text:"Excluir"}));
+  if(D.categorias.length<=1){
+    del.appendChild(el("p",{class:"dica",text:"Você precisa de pelo menos uma categoria."}));
+  }else if(usos){
+    del.appendChild(el("p",{class:"dica",style:"margin-bottom:8px",
+      text:usos+(usos===1?" tarefa usa":" tarefas usam")+" esta categoria. Escolha para onde elas vão:"}));
+    var ch=el("div",{class:"chips"});
+    D.categorias.forEach(function(o){
+      if(o.id===c.id)return;
+      var b=el("button",{class:"chip mini","aria-pressed":"false",text:o.nome});
+      b.addEventListener("click",function(){
+        destino=o.id;
+        Array.prototype.forEach.call(ch.children,function(x){x.setAttribute("aria-pressed","false");});
+        b.setAttribute("aria-pressed","true");
+      });
+      ch.appendChild(b);
+    });
+    del.appendChild(ch);
+    var b2=el("div",{class:"acoes"});
+    b2.appendChild(el("button",{class:"btn leve largo",text:"Mover e excluir",onclick:function(){
+      if(!destino){alert("Escolha a categoria de destino.");return;}
+      if(!confirm("Mover "+usos+" tarefa(s) para \""+cat(destino).nome+"\" e excluir \""+c.nome+"\"?"))return;
+      D.tarefas.forEach(function(t){if(t.cat===c.id)t.cat=destino;});
+      Object.keys(D.dias).forEach(function(k){
+        (D.dias[k].extras||[]).forEach(function(x){if(x.cat===c.id)x.cat=destino;});
+      });
+      (D.periodos||[]).forEach(function(pp){if(pp.cats)pp.cats=pp.cats.filter(function(x){return x!==c.id;});});
+      D.categorias=D.categorias.filter(function(x){return x.id!==c.id;});
+      form=null;salvar();render();
+    }}));
+    del.appendChild(b2);
+  }else{
+    var b3=el("div",{class:"acoes"});
+    b3.appendChild(el("button",{class:"btn leve largo",text:"Excluir categoria",onclick:function(){
+      if(!confirm("Excluir \""+c.nome+"\"?"))return;
+      D.categorias=D.categorias.filter(function(x){return x.id!==c.id;});
+      form=null;salvar();render();}}));
+    del.appendChild(b3);
+  }
+  f.appendChild(del);
+  f.appendChild(el("div",{class:"acoes"},[el("button",{class:"btn leve largo",text:"Fechar",onclick:function(){form=null;render();}})]));
+  return f;
+}
+function formNovaCat(){
+  var nome="",f=el("div",{class:"form"});
+  f.appendChild(el("h4",{text:"Nova categoria"}));
+  f.appendChild(campoTexto("Nome","",function(v){nome=v;},"Ex.: Trabalho (RI)"));
+  var ac=el("div",{class:"acoes"});
+  ac.appendChild(el("button",{class:"btn cheio",text:"Criar",onclick:function(){
+    var n=nome.trim(); if(!n)return;
+    var limpo=n.replace(/[^A-Za-zÀ-ÿ]/g,""),bs=(limpo.slice(0,2)||"CT").toUpperCase(),id=bs,i=2;
+    while(D.categorias.some(function(c){return c.id===id;})){id=(bs.charAt(0)+i).toUpperCase();i++;}
+    D.categorias.push({id:id,nome:n,cor:PALETA[D.categorias.length%PALETA.length]});
+    form=null;salvar();render();}}));
+  ac.appendChild(el("button",{class:"btn leve",text:"Cancelar",onclick:function(){form=null;render();}}));
+  f.appendChild(ac);
+  return f;
+}
+
+function painelPeriodos(p){
+  var lista=(D.periodos||[]).slice().sort(function(a,b){return b.ini.localeCompare(a.ini);});
+  p.appendChild(el("div",{class:"grupo"},[el("span",{text:"Férias, feriados e folgas"}),el("span",{text:String(lista.length)})]));
+  p.appendChild(el("p",{class:"dica",style:"margin-bottom:6px",
+    text:"Durante o período as tarefas escolhidas somem da agenda e não contam como falha. Quando acaba, tudo volta sozinho."}));
+  if(!lista.length)p.appendChild(el("p",{class:"dica",style:"padding:14px 0",text:"Nenhum período cadastrado."}));
+  lista.forEach(function(x){
+    var hoje=kD(new Date()),ativo=hoje>=x.ini&&hoje<=x.fim;
+    var L=el("div",{class:"linha",style:"grid-template-columns:1fr 30px"});
+    var m=el("div",{class:"alvo"});
+    m.appendChild(el("div",{class:"titulo",text:x.nome+(ativo?" · agora":"")}));
+    m.appendChild(el("div",{class:"meta"},[
+      el("span",{class:"faixa",text:br(x.ini)+" a "+br(x.fim)}),
+      el("span",{class:"minimo",text:(x.cats&&x.cats.length)?"pausa: "+x.cats.map(function(c){return cat(c).nome;}).join(", "):"pausa tudo"})]));
+    L.appendChild(m);
+    L.appendChild(el("button",{class:"pill",style:"justify-self:end;border-radius:3px;padding:7px 9px",text:"×",
+      onclick:function(e){e.stopPropagation();
+        if(!confirm("Apagar \""+x.nome+"\"?"))return;
+        D.periodos=D.periodos.filter(function(y){return y.id!==x.id;});salvar();render();}}));
+    m.addEventListener("click",function(){form=(form==="per:"+x.id)?null:("per:"+x.id);render();});
+    p.appendChild(L);
+    if(form==="per:"+x.id)p.appendChild(formPeriodo(x));
+  });
+  var ac=el("div",{class:"acoes"});
+  ac.appendChild(el("button",{class:"btn cheio largo",text:"+ Novo período",onclick:function(){form=form==="novoper"?null:"novoper";render();}}));
+  p.appendChild(ac);
+  if(form==="novoper")p.appendChild(formPeriodo(null));
+}
+function formPeriodo(orig){
+  var novo=!orig;
+  var hoje=kD(new Date());
+  var e=orig?JSON.parse(JSON.stringify(orig)):{id:uid(),nome:"Férias",tipo:"ferias",ini:hoje,fim:kD(somaDias(new Date(),7)),cats:[]};
+  if(!e.cats)e.cats=[];
+  var f=el("div",{class:"form"});
+  f.appendChild(el("h4",{text:novo?"Novo período":"Editar período"}));
+  var ct=el("div",{class:"campo"});
+  ct.appendChild(el("label",{text:"Tipo"}));
+  var cht=el("div",{class:"chips"});
+  TIPOS_PER.forEach(function(o){
+    var b=el("button",{class:"chip mini","aria-pressed":e.tipo===o[0]?"true":"false",text:o[1]});
+    b.addEventListener("click",function(){
+      e.tipo=o[0]; if(!orig){e.nome=o[1]; inNome.value=o[1];}
+      Array.prototype.forEach.call(cht.children,function(x){x.setAttribute("aria-pressed","false");});
+      b.setAttribute("aria-pressed","true");
+    });
+    cht.appendChild(b);
+  });
+  ct.appendChild(cht); f.appendChild(ct);
+  var cn=campoTexto("Nome",e.nome,function(v){e.nome=v;},"Ex.: Férias de agosto");
+  var inNome=cn.querySelector("input");
+  f.appendChild(cn);
+  var i1=el("input",{type:"date",value:e.ini,onchange:function(ev){e.ini=ev.target.value;}});
+  var i2=el("input",{type:"date",value:e.fim,onchange:function(ev){e.fim=ev.target.value;}});
+  f.appendChild(el("div",{class:"campo"},[el("div",{class:"duo"},[
+    el("div",{},[el("label",{class:"rotulo",text:"De"}),i1]),
+    el("div",{},[el("label",{class:"rotulo",text:"Até"}),i2])])]));
   var cc=el("div",{class:"campo"});
-  cc.appendChild(el("label",{text:"Suas categorias"}));
-  var ch=el("div",{class:"chips"});
-  D.categorias.forEach(function(c){ch.appendChild(el("span",{class:"chip",style:"color:"+c.cor+";border-color:"+c.cor+"55",text:c.nome}));});
-  cc.appendChild(ch);
-  var nv=el("div",{class:"acoes"});
-  nv.appendChild(el("button",{class:"btn leve largo",text:"+ Nova categoria",onclick:function(){form=form==="cat"?null:"cat";render();}}));
-  cc.appendChild(nv);
-  if(form==="cat")cc.appendChild(formCategoria());
-  p.appendChild(cc);
+  cc.appendChild(el("label",{text:"O que pausar"}));
+  var todos=el("button",{class:"chip mini","aria-pressed":e.cats.length?"false":"true",text:"Tudo"});
+  var chc=el("div",{class:"chips"});
+  todos.addEventListener("click",function(){
+    e.cats=[]; todos.setAttribute("aria-pressed","true");
+    Array.prototype.forEach.call(chc.children,function(x){if(x!==todos)x.setAttribute("aria-pressed","false");});
+  });
+  chc.appendChild(todos);
+  D.categorias.forEach(function(c){
+    var b=el("button",{class:"chip mini","aria-pressed":e.cats.indexOf(c.id)>=0?"true":"false",text:c.nome});
+    b.addEventListener("click",function(){
+      var i=e.cats.indexOf(c.id);
+      if(i>=0)e.cats.splice(i,1); else e.cats.push(c.id);
+      b.setAttribute("aria-pressed",e.cats.indexOf(c.id)>=0?"true":"false");
+      todos.setAttribute("aria-pressed",e.cats.length?"false":"true");
+    });
+    chc.appendChild(b);
+  });
+  cc.appendChild(chc);
+  cc.appendChild(el("p",{class:"dica",text:"Ex.: nas férias pause só as categorias de trabalho e mantenha treino e leitura."}));
+  f.appendChild(cc);
+  var ac=el("div",{class:"acoes"});
+  ac.appendChild(el("button",{class:"btn cheio",text:"Salvar",onclick:function(){
+    if(!e.nome.trim()){alert("Dê um nome.");return;}
+    if(e.fim<e.ini){alert("A data final não pode ser antes da inicial.");return;}
+    if(!D.periodos)D.periodos=[];
+    if(novo)D.periodos.push(e);
+    else{for(var i=0;i<D.periodos.length;i++)if(D.periodos[i].id===e.id)D.periodos[i]=e;}
+    form=null;salvar();render();}}));
+  ac.appendChild(el("button",{class:"btn leve",text:"Cancelar",onclick:function(){form=null;render();}}));
+  f.appendChild(ac);
+  return f;
 }
 
 function formTarefa(orig){
   var novo=!orig;
-  var mesAtual=new Date().getFullYear()+"-"+String(new Date().getMonth()+1).padStart(2,"0");
-  var base=orig||{id:uid(),titulo:"",hora:"07:00",dur:30,cat:D.categorias[0].id,minimo:"",projeto:false,
-    rec:{tipo:(vista==="mes"?"mensal":"semanal"),dias:(typeof vista==="number"?[vista]:[1]),diaMes:1,cada:1,util:false,ancora:mesAtual},
+  var hojeK=kD(new Date());
+  var mesAtual=hojeK.slice(0,7);
+  var padrao={id:uid(),titulo:"",hora:"07:00",dur:30,cat:D.categorias[0].id,minimo:"",projeto:false,
+    rec:{tipo:(vista==="mes"?"mensal":"semanal"),dias:(typeof vista==="number"?[vista]:[1]),diaMes:1,cada:1,util:false,ancora:mesAtual,data:hojeK},
     inicio:null,encerrada:null};
-  var e=JSON.parse(JSON.stringify(base));
+  var e=JSON.parse(JSON.stringify(orig||padrao));
   if(!e.rec)e.rec={tipo:"semanal",dias:[1]};
   if(!e.rec.dias)e.rec.dias=[1];
   if(e.rec.diaMes===undefined||e.rec.diaMes===null)e.rec.diaMes=1;
   if(!e.rec.cada)e.rec.cada=1;
   if(!e.rec.ancora)e.rec.ancora=mesAtual;
+  if(!e.rec.data)e.rec.data=hojeK;
   var forcar=false;
 
   var f=el("div",{class:"form"});
@@ -914,8 +1255,8 @@ function formTarefa(orig){
   var cf=el("div",{class:"campo"});
   cf.appendChild(el("label",{text:"Com que frequência"}));
   var tipos=el("div",{class:"chips"});
-  [["semanal","Toda semana"],["mensal","Mensal / trimestral"]].forEach(function(o){
-    var b=el("button",{class:"chip","aria-pressed":e.rec.tipo===o[0]?"true":"false",text:o[1]});
+  [["semanal","Toda semana"],["mensal","Mensal / trimestral"],["unica","Data marcada"]].forEach(function(o){
+    var b=el("button",{class:"chip mini","aria-pressed":e.rec.tipo===o[0]?"true":"false",text:o[1]});
     b.addEventListener("click",function(){
       e.rec.tipo=o[0];forcar=false;
       Array.prototype.forEach.call(tipos.children,function(x){x.setAttribute("aria-pressed","false");});
@@ -945,11 +1286,26 @@ function formTarefa(orig){
         ch.appendChild(b);
       });
       recBox.appendChild(ch);
+      recBox.appendChild(prevTxt);
+    }else if(e.rec.tipo==="unica"){
+      recBox.appendChild(el("label",{class:"rotulo",text:"Em que dia"}));
+      recBox.appendChild(el("input",{type:"date",value:e.rec.data,onchange:function(ev){e.rec.data=ev.target.value;atualiza();}}));
+      recBox.appendChild(el("p",{class:"dica",text:"Acontece uma vez só, nessa data."}));
+      recBox.appendChild(prevTxt);
     }else{
-      recBox.appendChild(el("label",{class:"rotulo",text:"Em que dia do mês"}));
+      recBox.appendChild(el("label",{class:"rotulo",text:"Começando em"}));
+      var iDt=el("input",{type:"date",value:e.inicio||hojeK});
+      iDt.addEventListener("change",function(ev){
+        var v=ev.target.value; if(!v)return;
+        e.inicio=v; e.rec.ancora=v.slice(0,7); e.rec.diaMes=parseInt(v.split("-")[2],10);
+        montaRec(); atualiza();
+      });
+      recBox.appendChild(iDt);
+      recBox.appendChild(el("p",{class:"dica",text:"Escolha a primeira data. O dia do mês e o ponto de partida saem daqui."}));
+      recBox.appendChild(el("label",{class:"rotulo",style:"margin-top:14px",text:"Repete no dia"}));
       var cd=el("div",{class:"chips"});
       [[1,"Dia 1"],[5,"Dia 5"],[10,"Dia 10"],[15,"Dia 15"],[20,"Dia 20"],[25,"Dia 25"],[0,"Último dia"]].forEach(function(o){
-        cd.appendChild(el("button",{class:"chip","aria-pressed":e.rec.diaMes===o[0]?"true":"false",text:o[1],
+        cd.appendChild(el("button",{class:"chip mini","aria-pressed":e.rec.diaMes===o[0]?"true":"false",text:o[1],
           onclick:function(){e.rec.diaMes=o[0];montaRec();atualiza();}}));
       });
       recBox.appendChild(cd);
@@ -961,12 +1317,12 @@ function formTarefa(orig){
       recBox.appendChild(el("label",{class:"rotulo",style:"margin-top:14px",text:"De quanto em quanto tempo"}));
       var cc2=el("div",{class:"chips"});
       [1,2,3,6,12].forEach(function(n){
-        cc2.appendChild(el("button",{class:"chip","aria-pressed":(e.rec.cada||1)===n?"true":"false",text:CADAS[n],
+        cc2.appendChild(el("button",{class:"chip mini","aria-pressed":(e.rec.cada||1)===n?"true":"false",text:CADAS[n],
           onclick:function(){e.rec.cada=n;montaRec();atualiza();}}));
       });
       recBox.appendChild(cc2);
       var cu=el("div",{class:"chips",style:"margin-top:10px"});
-      cu.appendChild(el("button",{class:"chip","aria-pressed":e.rec.util?"true":"false",text:"Empurrar para dia útil",
+      cu.appendChild(el("button",{class:"chip mini","aria-pressed":e.rec.util?"true":"false",text:"Empurrar para dia útil",
         onclick:function(){e.rec.util=!e.rec.util;montaRec();atualiza();}}));
       recBox.appendChild(cu);
       recBox.appendChild(prevTxt);
@@ -983,7 +1339,7 @@ function formTarefa(orig){
   cpj.appendChild(el("label",{text:"Tipo"}));
   var cpc=el("div",{class:"chips"});
   [[false,"Rotina permanente"],[true,"Até finalizar ⏳"]].forEach(function(o){
-    var b=el("button",{class:"chip","aria-pressed":(!!e.projeto===o[0])?"true":"false",text:o[1]});
+    var b=el("button",{class:"chip mini","aria-pressed":(!!e.projeto===o[0])?"true":"false",text:o[1]});
     b.addEventListener("click",function(){
       e.projeto=o[0];
       Array.prototype.forEach.call(cpc.children,function(x){x.setAttribute("aria-pressed","false");});
@@ -992,7 +1348,6 @@ function formTarefa(orig){
     cpc.appendChild(b);
   });
   cpj.appendChild(cpc);
-  cpj.appendChild(el("p",{class:"dica",text:"\"Até finalizar\" ganha um botão de concluir de vez na aba Hoje. Quando terminar, ela sai da agenda e o histórico fica."}));
   f.appendChild(cpj);
 
   var alerta=el("div",{});
@@ -1000,10 +1355,8 @@ function formTarefa(orig){
 
   function atualiza(){
     fimTxt.textContent=e.dur?"Termina às "+hhmm(mins(e.hora)+e.dur):"Sem duração: não reserva espaço na agenda.";
-    if(e.rec.tipo==="mensal"){
-      var pr=proximaOcorrencia(e,new Date());
-      prevTxt.textContent=pr?"Próxima vez: "+DIAS_C[pr.getDay()]+", "+pr.getDate()+" de "+MESES[pr.getMonth()]:"Sem próxima data.";
-    }
+    var pr=proximaOcorrencia(e,new Date());
+    prevTxt.textContent=pr?"Próxima vez: "+DIAS_C[pr.getDay()]+", "+pr.getDate()+" de "+MESES[pr.getMonth()]:"Sem próxima data.";
     alerta.innerHTML="";
     var c=conflitosDe(e,novo?null:e.id);
     if(c.length&&!forcar){
@@ -1014,9 +1367,9 @@ function formTarefa(orig){
       box.appendChild(ul);
       var livre=proximoLivre(e,novo?null:e.id);
       var bt=el("div",{class:"chips"});
-      if(livre)bt.appendChild(el("button",{class:"chip",text:"Usar "+livre+"–"+hhmm(mins(livre)+e.dur),
+      if(livre)bt.appendChild(el("button",{class:"chip mini",text:"Usar "+livre+"–"+hhmm(mins(livre)+e.dur),
         onclick:function(){e.hora=livre;iH.value=livre;atualiza();}}));
-      bt.appendChild(el("button",{class:"chip",text:"Permitir sobreposição",onclick:function(){forcar=true;atualiza();}}));
+      bt.appendChild(el("button",{class:"chip mini",text:"Permitir sobreposição",onclick:function(){forcar=true;atualiza();}}));
       box.appendChild(bt);
       alerta.appendChild(box);
     }
@@ -1034,28 +1387,13 @@ function formTarefa(orig){
     form=null;salvar();render();}}));
   if(!novo&&!e.encerrada)ac.appendChild(el("button",{class:"btn leve",text:"Encerrar",onclick:function(){
     if(!confirm("Encerrar \""+e.titulo+"\"? Ela sai da agenda a partir de amanhã e o histórico continua."))return;
-    for(var i=0;i<D.tarefas.length;i++)if(D.tarefas[i].id===e.id)D.tarefas[i].encerrada=kD(new Date(Date.now()+86400000));
+    for(var i=0;i<D.tarefas.length;i++)if(D.tarefas[i].id===e.id)D.tarefas[i].encerrada=kD(somaDias(new Date(),1));
     form=null;salvar();render();}}));
   ac.appendChild(el("button",{class:"btn leve",text:"Cancelar",onclick:function(){form=null;render();}}));
   f.appendChild(ac);
   return f;
 }
 
-function formCategoria(){
-  var nome="",f=el("div",{class:"form"});
-  f.appendChild(el("h4",{text:"Nova categoria"}));
-  f.appendChild(campoTexto("Nome","",function(v){nome=v;},"Ex.: Trabalho (RI)"));
-  var ac=el("div",{class:"acoes"});
-  ac.appendChild(el("button",{class:"btn cheio",text:"Criar",onclick:function(){
-    var n=nome.trim(); if(!n)return;
-    var limpo=n.replace(/[^A-Za-zÀ-ÿ]/g,""),bs=(limpo.slice(0,2)||"CT").toUpperCase(),id=bs,i=2;
-    while(D.categorias.some(function(c){return c.id===id;})){id=(bs.charAt(0)+i).toUpperCase();i++;}
-    D.categorias.push({id:id,nome:n,cor:PALETA[D.categorias.length%PALETA.length]});
-    form=null;salvar();render();}}));
-  ac.appendChild(el("button",{class:"btn leve",text:"Cancelar",onclick:function(){form=null;render();}}));
-  f.appendChild(ac);
-  return f;
-}
 function campoTexto(rot,val,cb,ph){
   var c=el("div",{class:"campo"});
   c.appendChild(el("label",{text:rot}));
@@ -1067,7 +1405,7 @@ function campoCategoria(atual,cb){
   c.appendChild(el("label",{text:"Categoria"}));
   var ch=el("div",{class:"chips"});
   D.categorias.forEach(function(k){
-    var b=el("button",{class:"chip","aria-pressed":atual===k.id?"true":"false",text:k.nome});
+    var b=el("button",{class:"chip mini","aria-pressed":atual===k.id?"true":"false",text:k.nome});
     b.addEventListener("click",function(){
       cb(k.id);
       Array.prototype.forEach.call(ch.querySelectorAll(".chip"),function(x){x.setAttribute("aria-pressed","false");});
@@ -1078,16 +1416,111 @@ function campoCategoria(atual,cb){
   c.appendChild(ch); return c;
 }
 
+/* ================= DIÁRIO ================= */
+function pDiario(p){
+  var hoje=new Date(),k=kD(hoje),r=rDia(k);
+  p.appendChild(el("p",{class:"intro",text:"Duas linhas por dia já bastam. O valor aparece quando você relê daqui a um mês."}));
+
+  var ch=el("div",{class:"campo"});
+  ch.appendChild(el("label",{text:"Como foi o dia de hoje"}));
+  var chips=el("div",{class:"chips"});
+  [1,2,3,4,5].forEach(function(n){
+    chips.appendChild(el("button",{class:"chip mini","aria-pressed":r.diario.humor===n?"true":"false",text:HUMOR[n],
+      onclick:function(){r.diario.humor=(r.diario.humor===n?0:n);salvar();render();}}));
+  });
+  ch.appendChild(chips); p.appendChild(ch);
+
+  var ct=el("div",{class:"campo"});
+  ct.appendChild(el("label",{text:"O que aconteceu"}));
+  var t1=el("textarea",{style:"min-height:110px",placeholder:"Escreva à vontade.",oninput:function(e){r.diario.texto=e.target.value;salvar();}});
+  t1.value=r.diario.texto||""; ct.appendChild(t1); p.appendChild(ct);
+
+  var cb=el("div",{class:"campo"});
+  cb.appendChild(el("label",{text:"O que valeu a pena hoje"}));
+  var t2=el("textarea",{placeholder:"Uma coisa só já serve.",oninput:function(e){r.diario.bom=e.target.value;salvar();}});
+  t2.value=r.diario.bom||""; cb.appendChild(t2); p.appendChild(cb);
+
+  var feitas=Object.keys(r.notasT||{});
+  if(feitas.length){
+    p.appendChild(el("div",{class:"grupo"},[el("span",{text:"Anotações das tarefas de hoje"})]));
+    feitas.forEach(function(id){
+      var t=acharT(id)||(r.extras||[]).filter(function(x){return x.id===id;})[0];
+      p.appendChild(el("div",{class:"statLinha"},[
+        el("div",{class:"statTopo"},[el("b",{text:t?t.titulo:"Tarefa"}),el("span",{text:""})]),
+        el("p",{class:"dica",style:"font-style:normal;color:var(--tinta2)",text:r.notasT[id]})]));
+    });
+  }
+
+  /* insight humor x aderência */
+  var comH=[],semH=[];
+  for(var i=0;i<60;i++){
+    var d=somaDias(hoje,-i),reg=D.dias[kD(d)];
+    if(!reg||!reg.diario||!reg.diario.humor)continue;
+    if(!tarefasDe(d).length)continue;
+    (prog(d).ok?comH:semH).push(reg.diario.humor);
+  }
+  function media(a){return a.length?(a.reduce(function(s,x){return s+x;},0)/a.length):0;}
+  if(comH.length>=3&&semH.length>=3){
+    p.appendChild(el("div",{class:"aviso",html:"<strong>Um padrão seu:</strong> nos dias em que você bateu a meta, o humor médio foi <strong>"+
+      media(comH).toFixed(1)+"</strong>; nos dias em que não bateu, <strong>"+media(semH).toFixed(1)+"</strong>. ("+
+      (comH.length+semH.length)+" dias anotados)"}));
+  }
+
+  /* histórico */
+  var hist=[];
+  for(var j=1;j<=diarioN;j++){
+    var dd=somaDias(hoje,-j),rr=D.dias[kD(dd)];
+    if(!rr||!rr.diario)continue;
+    if(!rr.diario.humor&&!(rr.diario.texto||"").trim()&&!(rr.diario.bom||"").trim())continue;
+    hist.push({d:dd,r:rr});
+  }
+  p.appendChild(el("div",{class:"grupo"},[el("span",{text:"Dias anteriores"}),el("span",{text:String(hist.length)})]));
+  if(!hist.length)p.appendChild(el("p",{class:"dica",style:"padding:12px 0",text:"Nada escrito ainda nos últimos "+diarioN+" dias."}));
+  hist.forEach(function(o){
+    var box=el("div",{class:"statLinha",style:"cursor:pointer"});
+    var aberto=(form==="dia:"+kD(o.d));
+    box.appendChild(el("div",{class:"statTopo"},[
+      el("b",{text:(aberto?"▾ ":"▸ ")+DIAS_C[o.d.getDay()]+" "+br(kD(o.d))}),
+      el("span",{text:(o.r.diario.humor?HUMOR[o.r.diario.humor]:"—")+" · "+prog(o.d).pct+"%"})]));
+    if(!aberto&&o.r.diario.texto)box.appendChild(el("p",{class:"dica",style:"font-style:normal",
+      text:o.r.diario.texto.slice(0,90)+(o.r.diario.texto.length>90?"…":"")}));
+    box.addEventListener("click",function(){form=aberto?null:("dia:"+kD(o.d));render();});
+    p.appendChild(box);
+    if(aberto){
+      var cx=el("div",{style:"padding:6px 0 12px 14px;border-left:2px solid var(--linha);margin-left:2px"});
+      if(o.r.diario.texto)cx.appendChild(el("p",{style:"margin:6px 0;font-size:14.5px",text:o.r.diario.texto}));
+      if(o.r.diario.bom)cx.appendChild(el("p",{style:"margin:6px 0;font-size:14px;color:var(--carimbo)",text:"Valeu a pena: "+o.r.diario.bom}));
+      if(o.r.nota)cx.appendChild(el("p",{class:"dica",text:"Atrapalhou: "+o.r.nota}));
+      Object.keys(o.r.notasT||{}).forEach(function(id){
+        var t=acharT(id);
+        cx.appendChild(el("p",{class:"dica",style:"font-style:normal",text:"• "+(t?t.titulo+": ":"")+o.r.notasT[id]}));
+      });
+      cx.appendChild(el("div",{class:"acoes",style:"border:0;padding:0"},[
+        el("button",{class:"btn leve",text:"Abrir esse dia",onclick:function(){dataSel=kD(o.d);aba="dia";form=null;window.scrollTo(0,0);render();}})]));
+      p.appendChild(cx);
+    }
+  });
+  if(hist.length>=diarioN-2){
+    var mais=el("div",{class:"acoes"});
+    mais.appendChild(el("button",{class:"btn leve largo",text:"Ver mais dias",onclick:function(){diarioN+=14;render();}}));
+    p.appendChild(mais);
+  }
+}
+
 /* ================= DADOS ================= */
 function analise(nDias){
   var fim=new Date(),r={dias:0,diasOk:0,diasMin:0,feitas:0,falhas:0,total:0,porCat:{},
     porPeriodo:{"Manhã":{f:0,t:0},"Tarde":{f:0,t:0},"Noite":{f:0,t:0}},
-    motivos:{},topFalhas:{},imprevistos:[],puladas:0,minPrev:0,minReal:0,notas:[],inicio:"",fim:kD(fim)};
+    motivos:{},topFalhas:{},imprevistos:[],puladas:0,minPrev:0,minReal:0,notas:[],anotacoes:[],
+    diasFolga:0,humor:[],inicio:"",fim:kD(fim)};
   for(var i=nDias-1;i>=0;i--){
     var d=new Date(fim.getFullYear(),fim.getMonth(),fim.getDate()-i),k=kD(d);
     if(i===nDias-1)r.inicio=k;
+    if(periodosEm(d).length)r.diasFolga++;
+    var reg=D.dias[k];
+    if(reg&&reg.diario&&reg.diario.humor)r.humor.push(reg.diario.humor);
     var ts=tarefasDe(d); if(!ts.length)continue;
-    var reg=D.dias[k]; if(!reg)continue;
+    if(!reg)continue;
     r.dias++;
     var pr=prog(d); if(pr.ok)r.diasOk++; if(pr.min)r.diasMin++;
     if(reg.excecoes)r.puladas+=Object.keys(reg.excecoes).filter(function(x){return reg.excecoes[x]==="pular";}).length;
@@ -1112,6 +1545,7 @@ function analise(nDias){
         if(!r.topFalhas[ch])r.topFalhas[ch]={n:0,mot:{}};
         r.topFalhas[ch].n++; r.topFalhas[ch].mot[mo]=(r.topFalhas[ch].mot[mo]||0)+1;
       }
+      if(reg.notasT&&reg.notasT[t.id])r.anotacoes.push(br(k)+" — "+t.titulo+": "+reg.notasT[t.id]);
       if(t.imprevisto)r.imprevistos.push({data:br(k),titulo:t.titulo,dur:t.dur||0,cat:c});
     });
   }
@@ -1123,7 +1557,7 @@ function pDados(p){
   var a=analise(periodo);
   var sel=el("div",{class:"chips",style:"margin-bottom:16px"});
   [[7,"7 dias"],[28,"28 dias"],[90,"90 dias"]].forEach(function(o){
-    sel.appendChild(el("button",{class:"chip","aria-pressed":periodo===o[0]?"true":"false",text:o[1],
+    sel.appendChild(el("button",{class:"chip mini","aria-pressed":periodo===o[0]?"true":"false",text:o[1],
       onclick:function(){periodo=o[0];render();}}));
   });
   p.appendChild(sel);
@@ -1134,6 +1568,7 @@ function pDados(p){
       el("div",{},[el("b",{text:ader+"%"}),el("span",{text:"aderência"})]),
       el("div",{},[el("b",{text:a.diasOk+"/"+a.dias}),el("span",{text:"dias registrados"})]),
       el("div",{},[el("b",{text:String(a.imprevistos.length)}),el("span",{text:"imprevistos"})])]));
+    if(a.diasFolga)p.appendChild(el("div",{class:"aviso amb",html:"<strong>"+a.diasFolga+" dia(s) de folga/férias</strong> no período — não entram na conta."}));
 
     p.appendChild(el("div",{class:"grupo",style:"margin-top:22px"},[el("span",{text:"Por categoria"}),el("span",{text:"toque para abrir"})]));
     Object.keys(a.porCat).sort(function(x,y){return a.porCat[y].t-a.porCat[x].t;}).forEach(function(c){
@@ -1203,7 +1638,7 @@ function pDados(p){
 
   p.appendChild(el("div",{class:"grupo",style:"margin-top:26px"},[el("span",{text:"Encaixar coisas novas com IA"})]));
   p.appendChild(el("p",{class:"dica",style:"margin-bottom:10px",
-    text:"Copie o mapa, diga à IA o que quer encaixar (demanda nova, hobby, curso) e cole a resposta dela em Importar."}));
+    text:"Copie o mapa, diga à IA o que quer encaixar e cole a resposta dela em Importar."}));
   var tm=el("textarea",{class:"saida",readonly:"readonly"}); tm.value=mapaParaIA();
   p.appendChild(tm);
   var am=el("div",{class:"acoes"});
@@ -1243,12 +1678,12 @@ function mapaParaIA(){
   L.push("Regras:");
   L.push("- cat: use um dos códigos da lista de categorias abaixo.");
   L.push("- dias: 0=Dom, 1=Seg ... 6=Sáb (só quando freq=semanal).");
-  L.push('- Mensal/trimestral: "freq":"mensal","diaMes":1,"cada":1 (cada:3 = trimestral; diaMes:0 = último dia do mês; "util":true empurra para dia útil).');
-  L.push("- projeto:true quando for algo que um dia termina; false quando for rotina permanente.");
+  L.push('- Mensal/trimestral: "freq":"mensal","diaMes":1,"cada":1 (cada:3 = trimestral; diaMes:0 = último dia; "util":true empurra para dia útil; "inicio":"AAAA-MM-DD" define a partir de quando).');
+  L.push('- Data única: "freq":"unica","data":"AAAA-MM-DD".');
+  L.push("- projeto:true quando for algo que um dia termina.");
   L.push("- minimo: a versão de 2 minutos da tarefa, para os dias ruins.");
   L.push("- NÃO use horários já ocupados. Prefira as vagas livres listadas.");
   L.push("- No máximo 3 tarefas novas por vez, e nunca deixe um dia passar de 12 tarefas.");
-  L.push("- Olhe onde eu já falho antes de escolher horário.");
   L.push("");
   L.push("## Categorias disponíveis");
   D.categorias.forEach(function(c){L.push("- "+c.id+" = "+c.nome);});
@@ -1257,8 +1692,7 @@ function mapaParaIA(){
   var hoje=new Date(),ini=iniSem(hoje);
   ORDEM.forEach(function(g){
     var d=new Date(ini.getFullYear(),ini.getMonth(),ini.getDate()+(g===0?6:g-1));
-    L.push("");
-    L.push("### "+DIAS_L[g]);
+    L.push(""); L.push("### "+DIAS_L[g]);
     var ts=D.tarefas.filter(function(t){
       if(t.encerrada||!t.rec)return false;
       if(t.rec.tipo==="semanal")return t.rec.dias.indexOf(g)>=0;
@@ -1266,14 +1700,19 @@ function mapaParaIA(){
     }).sort(function(a,b){return a.hora.localeCompare(b.hora);});
     if(!ts.length)L.push("(dia livre)");
     ts.forEach(function(t){L.push(t.hora+"–"+fimDe(t)+" "+t.titulo+" ["+t.cat+"]"
-      +(t.rec.tipo==="mensal"?" (mensal: "+descreveRec(t)+")":"")+(t.projeto?" (até finalizar)":""));});
+      +(t.rec.tipo!=="semanal"?" ("+descreveRec(t)+")":"")+(t.projeto?" (até finalizar)":""));});
     var vg=vagasDe(d,45);
     if(vg.length)L.push("LIVRE: "+vg.map(function(v){return hhmm(v.ini)+"–"+hhmm(v.fim);}).join(", "));
   });
-  var men=D.tarefas.filter(function(t){return !t.encerrada&&t.rec&&t.rec.tipo==="mensal";});
+  var men=D.tarefas.filter(function(t){return !t.encerrada&&t.rec&&t.rec.tipo!=="semanal";});
   if(men.length){
-    L.push(""); L.push("## Mensais e trimestrais");
+    L.push(""); L.push("## Datas marcadas, mensais e trimestrais");
     men.forEach(function(t){L.push("- "+t.titulo+" ["+t.cat+"] "+t.hora+"–"+fimDe(t)+" · "+descreveRec(t));});
+  }
+  var pers=(D.periodos||[]).filter(function(x){return x.fim>=kD(hoje);});
+  if(pers.length){
+    L.push(""); L.push("## Períodos de folga já marcados");
+    pers.forEach(function(x){L.push("- "+x.nome+": "+br(x.ini)+" a "+br(x.fim));});
   }
   var a=analise(28);
   if(a.dias){
@@ -1313,20 +1752,22 @@ function formImportar(){
         el("p",{class:"dica",text:"Peça à IA para responder só com o bloco JSON, sem explicação."})]));
       return;
     }
-    var mesAtual=new Date().getFullYear()+"-"+String(new Date().getMonth()+1).padStart(2,"0");
-    var validas=[];
+    var hojeK=kD(new Date()),validas=[];
     arr.forEach(function(o){
       if(!o||!o.titulo||!o.hora)return;
       var c=D.categorias.some(function(x){return x.id===o.cat;})?o.cat:D.categorias[0].id;
-      var rec;
-      if(o.freq==="mensal")rec={tipo:"mensal",dias:[],diaMes:(o.diaMes===0?0:(parseInt(o.diaMes,10)||1)),
-        cada:parseInt(o.cada,10)||1,util:!!o.util,ancora:mesAtual};
-      else{
+      var rec,inicio=null;
+      if(o.freq==="unica")rec={tipo:"unica",data:String(o.data||hojeK).slice(0,10),dias:[]};
+      else if(o.freq==="mensal"){
+        inicio=o.inicio?String(o.inicio).slice(0,10):null;
+        rec={tipo:"mensal",dias:[],diaMes:(o.diaMes===0?0:(parseInt(o.diaMes,10)||(inicio?parseInt(inicio.split("-")[2],10):1))),
+          cada:parseInt(o.cada,10)||1,util:!!o.util,ancora:(inicio?inicio.slice(0,7):hojeK.slice(0,7))};
+      }else{
         var ds=(o.dias||[1]).map(Number).filter(function(x){return x>=0&&x<=6;});
         rec={tipo:"semanal",dias:ds.length?ds:[1]};
       }
       var t={id:uid(),titulo:String(o.titulo).slice(0,90),hora:String(o.hora).slice(0,5),dur:parseInt(o.dur,10)||30,
-        cat:c,minimo:o.minimo?String(o.minimo).slice(0,60):"",projeto:!!o.projeto,rec:rec,inicio:null,encerrada:null};
+        cat:c,minimo:o.minimo?String(o.minimo).slice(0,60):"",projeto:!!o.projeto,rec:rec,inicio:inicio,encerrada:null};
       validas.push({t:t,ok:true,conf:conflitosDe(t,null)});
     });
     if(!validas.length){prev.appendChild(el("p",{class:"dica",text:"Nenhuma tarefa válida encontrada."}));return;}
@@ -1370,18 +1811,17 @@ function backup(){
     var a2=el("div",{class:"acoes"});
     a2.appendChild(el("button",{class:"btn cheio",text:"Restaurar",onclick:function(){
       var n=null;
-      try{ n=JSON.parse(txt); if(n.rotina&&!n.tarefas)n=migrar(n); }catch(x){n=null;}
+      try{ n=JSON.parse(txt); if(n.rotina&&!n.tarefas)n=migrarV2(n); }catch(x){n=null;}
       if(!n||!n.tarefas||!n.categorias){alert("Arquivo inválido.");return;}
       if(!confirm("Isso substitui tudo que está no aparelho. Continuar?"))return;
-      D=n; if(!D.dias)D.dias={}; if(!D.semanas)D.semanas={}; if(!D.avisos)D.avisos={ativo:false,antes:5};
-      form=null;salvar();render();
+      D=n; iniciar(); salvar();
     }}));
     a2.appendChild(el("button",{class:"btn leve",text:"Cancelar",onclick:function(){form=null;render();}}));
     f.appendChild(a2); c.appendChild(f);
   }
   var lim=el("div",{class:"acoes"});
   lim.appendChild(el("button",{class:"btn leve largo",text:"Apagar tudo",onclick:function(){
-    if(confirm("Isso apaga a rotina e todo o histórico. Continuar?")){D=vazio();salvar();aba="hoje";render();}}}));
+    if(confirm("Isso apaga a rotina e todo o histórico. Continuar?")){D=vazio();salvar();aba="dia";render();}}}));
   c.appendChild(lim);
   return c;
 }
@@ -1394,12 +1834,13 @@ function relatorio(a){
   L.push("Período: "+br(a.inicio)+" a "+br(a.fim)+" ("+periodo+" dias)");
   L.push("");
   L.push("## Resumo");
-  L.push("- Dias com rotina ativa: "+a.dias);
+  L.push("- Dias com rotina ativa: "+a.dias+(a.diasFolga?" (mais "+a.diasFolga+" de folga/férias, fora da conta)":""));
   L.push("- Dias registrados (meta atingida): "+a.diasOk+" ("+(a.dias?Math.round(a.diasOk/a.dias*100):0)+"%)");
   L.push("- Dias em modo mínimo: "+a.diasMin);
   L.push("- Tarefas cumpridas: "+a.feitas+" de "+a.total+" ("+(a.total?Math.round(a.feitas/a.total*100):0)+"%)");
-  L.push("- Marcadas como não cumpridas: "+a.falhas+" | puladas de propósito: "+a.puladas);
+  L.push("- Marcadas como não cumpridas: "+a.falhas+" | tiradas de propósito: "+a.puladas);
   L.push("- Tempo previsto: "+hm(a.minPrev)+" | cronometrado: "+hm(a.minReal));
+  if(a.humor.length)L.push("- Humor médio anotado no diário: "+(a.humor.reduce(function(s,x){return s+x;},0)/a.humor.length).toFixed(1)+" de 5 ("+a.humor.length+" dias)");
   var cats=Object.keys(a.porCat).sort(function(x,y){return a.porCat[y].t-a.porCat[x].t;});
   L.push(""); L.push("## Aderência por categoria");
   cats.forEach(function(c){var o=a.porCat[c];
@@ -1439,6 +1880,10 @@ function relatorio(a){
     L.push("- Últimos:");
     a.imprevistos.slice(-10).forEach(function(x){L.push("  - "+x.data+" — "+x.titulo+(x.dur?" ("+x.dur+" min)":""));});
   }
+  if(a.anotacoes.length){
+    L.push(""); L.push("## O que eu registrei ter feito");
+    a.anotacoes.slice(-20).forEach(function(n){L.push("- "+n);});
+  }
   if(a.notas.length){
     L.push(""); L.push("## O que atrapalhou (anotações do dia)");
     a.notas.slice(-15).forEach(function(n){L.push("- "+n);});
@@ -1450,23 +1895,27 @@ function relatorio(a){
     if(s.evitar)L.push("- Decidi não fazer: "+s.evitar);
   }
   L.push(""); L.push("## Como leio os números");
-  L.push("Um dia conta como registrado com 60% das tarefas, ou 30% no modo dia difícil. A meta da semana é 70% dos dias, não 100%.");
+  L.push("Um dia conta como registrado com 60% das tarefas, ou 30% no modo dia difícil. A meta da semana é 70% dos dias, não 100%. Dias de férias/folga não entram na conta.");
   return L.join("\n");
 }
 
-/* ================= GUIA ================= */
+/* ================= GUIA (modal do "?") ================= */
 var PASSOS=[
 ["Comece pequeno de propósito","Coloque 3 ou 4 tarefas num dia só — as que você já faria de qualquer jeito. Agenda cheia no dia 1 é a forma mais comum de abandonar no dia 5."],
-["Dê hora e duração a cada tarefa","Tarefa sem horário é intenção; com horário é compromisso. A duração é o que permite ver se o seu dia cabe no dia."],
+["Aba Dia, com setas ◀ ▶","A aba Dia abre em hoje, mas navega para qualquer data — ontem, amanhã, daqui a 40 dias. Tudo que você faz numa data vale só para ela."],
+["Dê hora e duração a cada tarefa","Tarefa sem horário é intenção; com horário é compromisso. A duração é o que permite ver se o seu dia cabe no dia, e é ela que impede sobreposição."],
 ["Escreva a versão mínima de tudo","É o campo mais importante. Ler 2 páginas, 10 minutos de estudo. Sem isso, o dia ruim vira zero."],
-["Escolha a frequência certa","Toda semana (marcando os dias) ou mensal/trimestral, para o que é de início de mês ou de 3 em 3 meses. \"Empurrar para dia útil\" evita cair em sábado."],
-["Marque o que tem fim","Tarefas \"até finalizar ⏳\" ganham um botão de concluir de vez na aba Hoje. Quando acabar, ela sai da agenda e o histórico continua contando."],
-["Use \"só hoje\" para o que fugir da regra","Pula ou muda a hora apenas hoje, abre a vaga no dia, e no próximo dia normal tudo volta ao lugar. É diferente de \"não deu\": pular não conta como falha."],
-["Ligue os avisos","O sino na aba Hoje pede permissão. Depois disso o celular avisa quando cada tarefa começa. Funciona com o app aberto ou minimizado."],
-["Cronometre o que você desconfia","O botão ▶ mede quanto tempo a tarefa realmente levou. Duas semanas disso e você para de chutar."],
-["Marque também o que não deu","O botão \"não deu\" com o motivo é o que transforma frustração em dado."],
-["Registre o que chega do nada","O botão ⚡ mostra quanto do seu dia não é seu. Costuma ser o número mais surpreendente."],
-["Domingo, meia hora na aba Semana","É a manutenção que impede a agenda de virar enfeite."]];
+["Três frequências","Toda semana (marcando os dias), Mensal/trimestral (escolhendo a data de início — \"a partir de 15/10, de 3 em 3 meses\") ou Data marcada (acontece uma vez só)."],
+["Marque o que tem fim","Tarefas \"até finalizar ⏳\" ganham um botão de concluir de vez. Quando acabar, ela sai da agenda e o histórico continua contando."],
+["\"Só neste dia\"","Tira a tarefa de um dia específico, ou muda hora e duração nele — sem mexer na rotina. Amanhã você tem reunião? Abre amanhã, tira a tarefa, e na semana seguinte ela está lá."],
+["Cronômetro com pausa","▶ inicia. Se aparecer algo urgente, toque em Pausar (ou dê play em outra tarefa — a atual pausa sozinha). Depois o botão vira ▶ retomar e o tempo continua de onde parou. Concluir marca a tarefa com o total."],
+["⚡ Chegou do nada","Registra o que apareceu sem aviso e já começa a cronometrar, pausando o que estava rodando. É assim que você descobre quanto do seu dia não é seu."],
+["✎ Anotar o que eu fiz","Cada tarefa tem um campo de anotação. \"Qualifiquei 12 títulos, 3 pendentes de certidão.\" Isso aparece no diário e entra no relatório."],
+["Prioridades por seleção","Toque nas tarefas do dia para marcar até três como prioridade. Elas ganham ★ na lista."],
+["Férias, feriados e folgas","Em Rotina → Férias e folgas. Marque o intervalo e escolha o que pausar (tudo, ou só as categorias de trabalho). Durante o período essas tarefas somem e não contam como falha. Quando acaba, voltam sozinhas."],
+["Diário","Uma nota por dia: como foi, o que aconteceu, o que valeu a pena. Depois de algumas semanas ele mostra o humor médio nos dias em que você bateu a meta versus os dias em que não bateu."],
+["Ligue os avisos","O sino na aba Dia pede permissão. Funciona com o app aberto ou minimizado; com ele totalmente fechado o Android não deixa."],
+["Domingo, meia hora na aba Semana","É a manutenção que impede a agenda de virar enfeite. Tocando num dia da grade você abre aquele dia."]];
 
 var CONTING=[
 ["Toda tarefa tem versão mínima","Fazer o mínimo risca do mesmo jeito. O que quebra o hábito é o zero, não o pouco."],
@@ -1474,22 +1923,23 @@ var CONTING=[
 ["O dia zera à meia-noite","Não existe hábito atrasado. Leitura de ontem não se recupera hoje — se retoma hoje."],
 ["A meta da semana é 70%","Cinco dias de sete é semana cumprida. Contar com 100% é contar com sorte."],
 ["Três prioridades, não dez","Se o dia virar, garanta uma. Dia com uma prioridade entregue não foi dia perdido."],
+["Folga marcada não é falha","Férias, feriado e folga saem da conta. Descanso planejado não deve estragar sua estatística."],
 ["Quando cair duas semanas seguidas, corte","A queda quase nunca é falta de disciplina; é rotina grande demais. Tire duas tarefas antes de tentar se esforçar mais."],
 ["Uma linha, sem julgamento","Anote o que atrapalhou. Depois de três semanas você enxerga o padrão — e padrão dá pra consertar."]];
 
 var PRATICAS=[
-["A empolgação do dia 1 não é combustível","Todo começo tem um pico de motivação que decai — é o efeito da novidade, não um defeito seu. Sistema que depende do pico quebra junto com ele. Por isso a régua aqui é 70% e não 100%, e por isso existe a versão mínima: o plano foi desenhado para o dia sem vontade, não para o dia empolgado.","Efeito de novidade"],
+["A empolgação do dia 1 não é combustível","Todo começo tem um pico de motivação que decai — é o efeito da novidade, não um defeito seu. Sistema que depende do pico quebra junto com ele. Por isso a régua é 70% e existe versão mínima: o plano foi desenhado para o dia sem vontade.","Efeito de novidade"],
 ["Intenção de implementação","Decidir antes \"quando X, eu faço Y\" aumenta bastante a chance de a ação acontecer, comparado a só ter a intenção.","Gollwitzer"],
-["Comece ridiculamente pequeno","Hábito se instala pela repetição, não pela intensidade. A versão mínima mantém a corrente ligada quando a energia acaba.","Fogg, Tiny Habits"],
-["Falhar um dia não quebra o hábito","Pesquisa sobre formação de hábito indica que um deslize isolado não atrapalha o processo; o que atrapalha é a interrupção prolongada.","Lally et al., 2010"],
-["Identidade sustenta mais que meta","\"Sou alguém que lê todo dia\" segura melhor que \"quero ler 30 livros\". Meta acaba quando você bate; identidade você exerce.","Identidade e hábito"],
-["Escrever o plano libera a cabeça","Tarefa pendente ocupa atenção até você registrar quando e como vai fazê-la. Não precisa terminar: precisa estar escrita.","Masicampo & Baumeister, 2011"],
-["Pequenos progressos movem a motivação","O que mais mexe com o ânimo é perceber avanço em algo que importa. Riscar é o retorno que falta no dia a dia.","Amabile & Kramer"],
-["Você superestima o que cabe no dia","Planejamento otimista é a regra. Deixe de 30% a 40% do dia sem nada marcado; é onde os imprevistos vão morar.","Falácia do planejamento"],
-["Revisão semanal segura o sistema","Sem um momento fixo de revisão, qualquer sistema de organização degrada em duas ou três semanas.","Allen, GTD"]];
+["Comece ridiculamente pequeno","Hábito se instala pela repetição, não pela intensidade.","Fogg, Tiny Habits"],
+["Falhar um dia não quebra o hábito","Um deslize isolado não atrapalha o processo; o que atrapalha é a interrupção prolongada.","Lally et al., 2010"],
+["Identidade sustenta mais que meta","\"Sou alguém que lê todo dia\" segura melhor que \"quero ler 30 livros\".","Identidade e hábito"],
+["Escrever o plano libera a cabeça","Tarefa pendente ocupa atenção até você registrar quando e como vai fazê-la.","Masicampo & Baumeister, 2011"],
+["Escrever sobre o dia ajuda a processá-lo","Registrar o que aconteceu e o que valeu a pena tende a melhorar clareza e humor ao longo do tempo.","Pennebaker; gratidão"],
+["Você superestima o que cabe no dia","Deixe de 30% a 40% do dia sem nada marcado; é onde os imprevistos vão morar.","Falácia do planejamento"],
+["Revisão semanal segura o sistema","Sem um momento fixo de revisão, qualquer sistema degrada em duas ou três semanas.","Allen, GTD"]];
 
-function pGuia(p){
-  p.appendChild(el("p",{class:"intro",text:"A agenda é sua: nada aqui vem pronto. O que segue é como usar e por que ela foi montada assim."}));
+function conteudoGuia(p){
+  p.appendChild(el("p",{class:"intro",text:"A agenda é sua: nada aqui vem pronto. O que segue é como usar cada parte."}));
   p.appendChild(el("div",{class:"grupo"},[el("span",{text:"Como usar"})]));
   PASSOS.forEach(function(s,i){
     p.appendChild(el("div",{class:"passo"},[el("div",{class:"n",text:String(i+1).padStart(2,"0")}),
@@ -1510,18 +1960,22 @@ function pGuia(p){
 /* ================= início ================= */
 function iniciar(){
   if(!D.dias)D.dias={}; if(!D.semanas)D.semanas={}; if(!D.tarefas)D.tarefas=[];
+  if(!D.periodos)D.periodos=[];
   if(!D.categorias||!D.categorias.length)D.categorias=CATS_BASE.slice();
   if(!D.avisos)D.avisos={ativo:false,antes:5};
+  D.v=4;
   if(D.avisos.ativo&&!liberado())D.avisos.ativo=false;
   if(D.timer&&D.timer.dia&&D.timer.dia!==kD(new Date()))D.timer=null;
+  dataSel=kD(new Date());
   render();
 }
 Store.ler(CHAVE).then(function(txt){
   var d=null; try{d=txt?JSON.parse(txt):null;}catch(e){}
-  if(d&&d.tarefas&&d.categorias){ D=d; iniciar(); return null; }
+  if(d&&d.tarefas&&d.categorias){ D=d; iniciar(); salvar(); return null; }
+  if(d&&d.rotina&&d.categorias){ D=migrarV2(d); iniciar(); salvar(); return null; }
   return Store.ler("minha-agenda-v2").then(function(velho){
     var v=null; try{v=velho?JSON.parse(velho):null;}catch(e){}
-    if(v&&v.rotina&&v.categorias){ D=migrar(v); iniciar(); salvar(); }
+    if(v&&v.rotina&&v.categorias){ D=migrarV2(v); iniciar(); salvar(); }
     else { D=vazio(); iniciar(); }
   });
 }).catch(function(e){console.error(e);D=vazio();iniciar();});

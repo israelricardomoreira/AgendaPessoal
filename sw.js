@@ -1,4 +1,4 @@
-var CACHE = "agenda-v5";
+var CACHE = "agenda-v7";
 var ARQUIVOS = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png", "./icon-maskable.png"];
 
 self.addEventListener("install", function (e) {
